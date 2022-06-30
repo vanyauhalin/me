@@ -8,6 +8,7 @@
   "author": "Ivan Uhalin <vanyauhalin@gmail.com>",
   "type": "module",
   "devDependencies": {
+    "@arkweid/lefthook": "0.7.7",
     "@commitlint/cli": "^17.0.3",
     "@commitlint/config-conventional": "^17.0.3",
     "@types/node": "^18.0.0",
