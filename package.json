@@ -10,6 +10,7 @@
   "devDependencies": {
     "@commitlint/cli": "^17.0.3",
     "@commitlint/config-conventional": "^17.0.3",
+    "@types/node": "^18.0.0",
     "@vanyauhalin/eslint-config-typescript": "^0.20.1",
     "@vanyauhalin/stylelint-config-base": "^0.4.4",
     "eslint": "^8.18.0",

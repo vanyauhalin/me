@@ -3,6 +3,7 @@ lockfileVersion: 5.4
 specifiers:
   '@commitlint/cli': ^17.0.3
   '@commitlint/config-conventional': ^17.0.3
+  '@types/node': ^18.0.0
   '@vanyauhalin/eslint-config-typescript': ^0.20.1
   '@vanyauhalin/stylelint-config-base': ^0.4.4
   eslint: ^8.18.0
@@ -12,6 +13,7 @@ specifiers:
 devDependencies:
   '@commitlint/cli': 17.0.3
   '@commitlint/config-conventional': 17.0.3
+  '@types/node': 18.0.0
   '@vanyauhalin/eslint-config-typescript': 0.20.1_b5e7v2qnwxfo6hmiq56u52mz3e
   '@vanyauhalin/stylelint-config-base': 0.4.4_stylelint@14.9.1
   eslint: 8.18.0
