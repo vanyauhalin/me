@@ -8,6 +8,8 @@
   "author": "Ivan Uhalin <vanyauhalin@gmail.com>",
   "type": "module",
   "devDependencies": {
+    "@vanyauhalin/eslint-config-typescript": "^0.20.1",
+    "eslint": "^8.18.0",
     "typescript": "^4.7.4"
   }
 }
