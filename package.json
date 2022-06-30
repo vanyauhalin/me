@@ -6,5 +6,8 @@
   "repository": "github:vanyauhalin/me",
   "license": "MIT",
   "author": "Ivan Uhalin <vanyauhalin@gmail.com>",
-  "type": "module"
+  "type": "module",
+  "devDependencies": {
+    "typescript": "^4.7.4"
+  }
 }
