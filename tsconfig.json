@@ -16,7 +16,8 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "types": [
-      "node"
+      "node",
+      "nunjucks"
     ],
     "outDir": "lib",
     "allowSyntheticDefaultImports": true,
