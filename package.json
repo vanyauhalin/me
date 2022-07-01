@@ -19,6 +19,7 @@
     "@vanyauhalin/nosock": "^0.2.0",
     "@vanyauhalin/stylelint-config-base": "^0.4.4",
     "csso": "^5.0.3",
+    "esbuild": "^0.14.48",
     "eslint": "^8.18.0",
     "html-minifier": "^4.0.0",
     "nunjucks": "^3.2.3",
