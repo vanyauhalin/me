@@ -16,6 +16,7 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "types": [
+      "html-minifier",
       "node",
       "nunjucks"
     ],
