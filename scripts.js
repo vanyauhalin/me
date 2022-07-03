@@ -90,7 +90,7 @@ const build = script('build', async () => {
       engine.addFilter('shortDate', (value) => short.format(new Date(value)));
 
       await script('build/index.njk', async () => {
-        const page = engine.render('template.njk', {
+        const page = engine.render('templates/page.njk', {
           ...meta,
           content: engine.render('pages/index.njk', {
             updated,
@@ -105,7 +105,7 @@ const build = script('build', async () => {
       })();
       await script('build/cv.njk', async () => {
         const data = await readFile('data/cv.json');
-        const page = engine.render('template.njk', {
+        const page = engine.render('templates/page.njk', {
           ...meta,
           content: engine.render('pages/cv.njk', {
             updated,
