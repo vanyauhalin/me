@@ -1,0 +1,16 @@
+{
+  "manifest_version": 3,
+  "name": "Ivan Uhalin | Software Engineer",
+  "version": "0.0.0",
+  "default_locale": "en",
+  "description": "A person from the world of science and technology",
+  "icons": [
+    {
+      "sizes": "any",
+      "src": "/favicon.svg",
+      "type": "image/svg+xml"
+    }
+  ],
+  "author": "Ivan Uhalin <vanyauhailn@gmail.com>",
+  "homepage_url": "https://vanyauhalin.me/"
+}
