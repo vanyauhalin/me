@@ -1,0 +1,19 @@
+<header>
+  <section>
+    <h1>
+      {{ heading }}
+    </h1>
+    {% include "templates/navigation.njk" %}
+    {% set separatorLength = 22 %}
+    {% include "templates/separator.njk" %}
+  </section>
+  <scheme-switch></scheme-switch>
+</header>
+<main>
+  <p>
+    404 ¯\_(ツ)_/¯
+  </p>
+</main>
+<footer>
+  {% include "templates/updated.njk" %}
+</footer>
