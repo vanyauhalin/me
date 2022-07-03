@@ -89,6 +89,20 @@ const build = script('build', async () => {
       });
       engine.addFilter('shortDate', (value) => short.format(new Date(value)));
 
+      await script('build/404.njk', async () => {
+        const page = engine.render('templates/page.njk', {
+          ...meta,
+          content: engine.render('pages/404.njk', {
+            updated,
+            heading: meta.heading,
+            site: meta.site,
+            url: `${meta.site}/404.html`,
+          }),
+          title: `${meta.heading} | 404`,
+          url: `${meta.site}/404.html`,
+        });
+        await writePage('dist/404.html', page);
+      })();
       await script('build/index.njk', async () => {
         const page = engine.render('templates/page.njk', {
           ...meta,
