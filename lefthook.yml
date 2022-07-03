@@ -1,0 +1,14 @@
+commit-msg:
+  commands:
+    lint:
+      run: commitlint --edit
+
+pre-commit:
+  parallel: true
+  commands:
+    lint-base:
+      glob: "*.{json,ts,yaml,yml}"
+      run: eslint {staged_files}
+    lint-styles:
+      glob: "*.css"
+      run: stylelint {staged_files}

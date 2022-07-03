@@ -1,0 +1,32 @@
+{
+  "name": "@vanyauhalin/me",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Part of me digitally",
+  "repository": "github:vanyauhalin/me",
+  "license": "MIT",
+  "author": "Ivan Uhalin <vanyauhalin@gmail.com>",
+  "type": "module",
+  "scripts": {
+    "lint-base": "eslint .",
+    "lint-styles": "stylelint src/**/*.css"
+  },
+  "devDependencies": {
+    "@arkweid/lefthook": "0.7.7",
+    "@commitlint/cli": "^17.0.3",
+    "@commitlint/config-conventional": "^17.0.3",
+    "@vanyauhalin/eslint-config-base": "^0.20.1",
+    "@vanyauhalin/nosock": "^0.2.0",
+    "@vanyauhalin/stylelint-config-base": "^0.4.4",
+    "csso": "^5.0.3",
+    "esbuild": "^0.14.48",
+    "eslint": "^8.18.0",
+    "html-minifier": "^4.0.0",
+    "nunjucks": "^3.2.3",
+    "puppeteer": "^15.3.0",
+    "stylelint": "^14.9.1"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
