@@ -8,8 +8,9 @@
   "author": "Ivan Uhalin <vanyauhalin@gmail.com>",
   "type": "module",
   "scripts": {
-    "lint-base": "eslint .",
-    "lint-styles": "stylelint src/**/*.css"
+    "build": "nosock",
+    "lint": "eslint . && stylelint src/**/*.css",
+    "serve": "nosock"
   },
   "devDependencies": {
     "@arkweid/lefthook": "0.7.7",

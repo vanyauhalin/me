@@ -1,0 +1,45 @@
+name: release
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          registry-url: "https://npm.pkg.github.com"
+          scope: "@vanyauhalin"
+      - run: npm i -g pnpm && pnpm i --frozen-lockfile
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: pnpm build
+      - run: |
+          raw="https://api.github.com/users/$ACTOR"
+          json=$(curl --silent -H 'Accept: application/json' $raw)
+          id=$(echo $json | jq --raw-output '.id')
+          git config --global user.name $ACTOR
+          git config --global user.email "$id+$ACTOR@users.noreply.github.com"
+        env:
+          ACTOR: ${{ github.actor }}
+      - run: |
+          git clone \
+            --quiet \
+            --no-checkout \
+            --single-branch \
+            --branch "gh-pages" \
+            "https://$RELEASE_TOKEN@github.com/$REPOSITORY.git" \
+            .
+          git add .
+          git commit \
+            --quiet \
+            --message "$(date +'%H:%M %d.%m.%Y')"
+          git push
+        working-directory: ./dist
+        env:
+          RELEASE_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+          REPOSITORY: ${{ github.repository }}
