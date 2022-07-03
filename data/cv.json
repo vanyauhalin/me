@@ -1,0 +1,128 @@
+{
+  "basics": {
+    "name": "Ivan Uhalin",
+    "label": "Software Engineer",
+    "image": "https://vanyauhalin.me/avatar.jpg",
+    "email": "vanyauhalin@gmail.com",
+    "url": "https://vanyauhalin.me",
+    "summary": "A person from the world of science and technology. Programming is a huge part of me — I live by dreaming up ideas and making them as beautiful interfaces, taking care of the quality of my own code.\nIn free time trying to be helpful to the open source community and become a little happier when my solutions, ideas help someone. I like the open source ideology and how it can bring people together to work on a common goal.\nOutside of programming, I listen to music, podcasts on the most unusual topics. My name is Ivan and I would like to meet you.",
+    "profiles": [
+      {
+        "network": "Telegram",
+        "username": "vanyauhalin",
+        "url": "https://t.me/vanyauhalin"
+      },
+      {
+        "network": "GitHub",
+        "username": "vanyauhalin",
+        "url": "https://github.com/vanyauhalin"
+      },
+      {
+        "network": "LinkedIn",
+        "username": "vanyauhalin",
+        "url": "https://www.linkedin.com/in/vanyauhalin"
+      },
+      {
+        "network": "Personal Site",
+        "username": "vanyauhalin.me",
+        "url": "https://vanyauhalin.me"
+      }
+    ]
+  },
+  "work": [
+    {
+      "name": "Open Source",
+      "position": "Software Engineer",
+      "url": "https://github.com/vanyauhalin",
+      "startDate": "2021-12-01",
+      "summary": "Writing own projects. Discussion in the community."
+    },
+    {
+      "name": "Pochta Tech",
+      "position": "Frontend Engineer",
+      "url": "https://pochta.tech",
+      "startDate": "2022-03-01",
+      "endDate": "2022-06-01",
+      "summary": "Creating with a team an internal service on React, .NET to view messages in NATS streamings, co-mentoring."
+    },
+    {
+      "name": "Freelance",
+      "position": "Frontend Engineer",
+      "startDate": "2022-01-01",
+      "endDate": "2022-02-01",
+      "summary": "Refactoring company reporting the SPA written on React. Expanded functionality and transferring it from one application to another."
+    },
+    {
+      "name": "OOO \"SK NEBO\"",
+      "position": "Programmer",
+      "startDate": "2021-02-01",
+      "endDate": "2021-07-01",
+      "summary": "Integrating the SPA's written on Vue into CRM interface. Writing, supporting of business processes of the company."
+    },
+    {
+      "name": "Self-employed",
+      "position": "Programmer",
+      "startDate": "2019-03-01",
+      "endDate": "2020-05-01",
+      "summary": "First steps in programming, management. Writing a social network bot to sell food. Delivery management, promotion, design, etc."
+    }
+  ],
+  "education": [
+    {
+      "institution": "RosNOU",
+      "url": "https://rosnou.ru",
+      "area": "Applied Computer Science",
+      "studyType": "Bachelor",
+      "startDate": "2018-09-01",
+      "endDate": "2022-07-01"
+    }
+  ],
+  "skills": [
+    {
+      "name": "Frontend",
+      "level": "Middle",
+      "keywords": [
+        "TypeScript",
+        "JavaScript",
+        "Web Components",
+        "React",
+        "Vue"
+      ]
+    },
+    {
+      "name": "Backend",
+      "level": "Middle",
+      "keywords": [
+        "Node",
+        "MongoDB",
+        "Nginx",
+        "Docker",
+        "Go (early stage)"
+      ]
+    },
+    {
+      "name": "DevOps",
+      "level": "Junior",
+      "keywords": [
+        "GitHub Actions"
+      ]
+    }
+  ],
+  "languages": [
+    {
+      "language": "English",
+      "fluency": "Professional working proficiency"
+    },
+    {
+      "language": "Russian",
+      "fluency": "Native speaker"
+    }
+  ],
+  "projects": [
+    {
+      "name": "nosock",
+      "description": "Tiny NodeJS scripts runner.",
+      "url": "https://github.com/vanyauhalin/nosock"
+    }
+  ]
+}
