@@ -19,4 +19,4 @@ jobs:
       - run: npm i -g pnpm && pnpm i
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - run: pnpm lint-base && pnpm lint-styles
+      - run: pnpm lint
