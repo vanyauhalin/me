@@ -60,8 +60,9 @@ body {
 }
 
 main {
-  display: inherit;
-  row-gap: inherit;
+  display: grid;
+  grid-template-rows: min-content;
+  row-gap: var(--line-height);
 }
 
 ul {
