@@ -1,0 +1,129 @@
+<header>
+  <section>
+    <h1>
+      {{ heading }}
+    </h1>
+    <p>
+      {{ data.basics.label }}
+    </p>
+    <a href="mailto:{{ data.basics.email }}">
+      {{ data.basics.email }}
+    </a>
+    <div>
+      {% for profile in data.basics.profiles %}
+        <a href="{{ profile.url }}">
+          {{ profile.network -}}
+        </a>
+        {{- ", " if not loop.last }}
+      {% endfor %}
+    </div>
+    {% set separatorLength = 41 %}
+    {% include "templates/separator.njk" %}
+  </section>
+  <scheme-switch></scheme-switch>
+</header>
+<main>
+  <section>
+    <h2 class="sr-only">
+      ## Summary
+    </h2>
+    <p>
+      {{ data.basics.summary | replace("\n", "</p><p>") | safe }}
+    </p>
+  </section>
+  {% set experienceHeading = "Work Experience" %}
+  {% set experienceList = [] %}
+  {% for work in data.work %}
+    {% set experienceList = (experienceList.push({
+      description: work.summary,
+      end: work.endDate,
+      start: work.startDate,
+      subtitle: work.position,
+      title: work.name,
+      url: work.url
+    }), experienceList) %}
+  {% endfor %}
+  {% include "templates/cv-experience.njk" %}
+
+  {% set experienceHeading = "Projects" %}
+  {% set experienceList = [] %}
+  {% for project in data.projects %}
+    {% set experienceList = (experienceList.push({
+      description: project.description,
+      title: project.name,
+      url: project.url
+    }), experienceList) %}
+  {% endfor %}
+  {% include "templates/cv-experience.njk" %}
+
+  {% set skillsHeading = "Stacks" %}
+  {% set skillsHead = ["Area", "Instruments"] %}
+  {% set skillsBody = [] %}
+  {% for skill in data.skills %}
+    {% set keywords %}
+      {{ skill.keywords | join(", ") }}
+    {% endset %}
+    {% set skillsBody = (
+      skillsBody.push([skill.name, keywords]),
+      skillsBody
+    ) %}
+  {% endfor %}
+  {% include "templates/cv-skills.njk" %}
+
+  {% set experienceHeading = "Education" %}
+  {% set experienceList = [] %}
+  {% for item in data.education %}
+    {% set subtitle %}
+      {{ item.studyType }}, {{ item.area }}
+    {% endset %}
+    {% set experienceList = (experienceList.push({
+      end: item.endDate,
+      start: item.startDate,
+      subtitle: subtitle,
+      title: item.institution,
+      url: item.url
+    }), experienceList) %}
+  {% endfor %}
+  {% include "templates/cv-experience.njk" %}
+
+  {% set skillsHeading = "Languages" %}
+  {% set skillsHead = ["Language", "Fluency"] %}
+  {% set skillsBody = [] %}
+  {% for lang in data.languages %}
+    {% set skillsBody = (
+      skillsBody.push([lang.language, lang.fluency]),
+      skillsBody
+    ) %}
+  {% endfor %}
+  {% include "templates/cv-skills.njk" %}
+</main>
+<footer>
+  <span class="print-only">
+    <a
+      href="{{ url }}"
+      target="_blank"
+    >
+      {{ "Online Version" -}}
+    </a>
+    {{- "," }}
+  </span>
+  <span class="no-print">
+    <a
+      href="{{ url }}.pdf"
+      target="_blank"
+    >
+      {{ "PDF Version" -}}
+    </a>
+    {{- "," }}
+  </span>
+  <span>
+    <a
+      href="{{ url }}.json"
+      target="_blank"
+    >
+      {{ "JSON Version" -}}
+    </a>
+    {{- "." }}
+  </span>
+  {% include "templates/updated.njk" %}
+</footer>

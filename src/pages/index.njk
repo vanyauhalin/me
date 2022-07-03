@@ -1,0 +1,47 @@
+<header>
+  <section>
+    <h1>
+      {{ heading }}
+    </h1>
+    {% include "templates/navigation.njk" %}
+    {% set separatorLength = 22 %}
+    {% include "templates/separator.njk" %}
+  </section>
+  <scheme-switch></scheme-switch>
+</header>
+<main>
+  <section>
+    <h2 class="sr-only">
+      Summary
+    </h2>
+    <p>
+      Software Engineer by profession — programming is a huge part of me.
+      But that doesn't mean I don't watch other interesting things.
+      Politics, economics, music, podcasts, movies and much more we can talk about.
+    </p>
+  </section>
+  <section>
+    <h2 class="sr-only">
+      Contacts
+    </h2>
+    <p>
+      My name is Ivan and you can find me on
+      <a href="https://t.me/vanyauhalin">
+        {{ "Telegram" -}}
+      </a>
+      {{- "," }}
+      <a href="https://github.com/vanyauhalin">
+        {{ "GitHub" -}}
+      </a>
+      or mail me at
+      <a href="mailto:vanyauhalin@gmail.com">
+        {{ "vanyauhalin@gmail.com" -}}
+      </a>
+      {{- "." }}
+      Let's meet, chat, make friends, love.
+    </p>
+  </section>
+</main>
+<footer>
+  {% include "templates/updated.njk" %}
+</footer>

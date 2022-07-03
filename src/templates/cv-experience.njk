@@ -1,0 +1,36 @@
+<section>
+  <h2>
+    ## {{ experienceHeading }}
+  </h2>
+  <ul>
+    {% for item in experienceList %}
+      <li>
+        {% if item.url %}
+          <a href="{{ item.url }}">
+            {{ item.title -}}
+          </a>
+        {%- else %}
+          <span>
+            {{ item.title -}}
+          </span>
+        {%- endif -%}
+        {% if item.subtitle -%}
+          , {{ item.subtitle }}
+        {% endif %}
+        {% if item.start %}
+          <br>
+          {{ item.start | shortDate }} –
+          {% if item.end %}
+            {{ item.end | shortDate }}
+          {%- else %}
+            Present
+          {% endif %}
+        {% endif %}
+        {% if item.description %}
+          <br>
+          {{ item.description }}
+        {% endif %}
+      </li>
+    {% endfor %}
+  </ul>
+</section>
