@@ -148,16 +148,19 @@ const build = script('build', async () => {
         );
       }));
     })(),
+    script('build/images', async () => {
+      await copyFile('src/images/vanyauhalin.png', 'dist/vanyauhalin.png');
+      await script('build/favicon.svg', async () => {
+        const icon = await readFile('src/images/favicon.svg');
+        await writePage('dist/favicon.svg', icon.toString(), {
+          collapseWhitespace: true,
+          sortAttributes: true,
+        });
+      })();
+    })(),
     script('copy/manifest.json', () => (
       copyFile('src/manifest.json', 'dist/manifest.json')
     ))(),
-    script('build/favicon.svg', async () => {
-      const icon = await readFile('src/favicon.svg');
-      await writePage('dist/favicon.svg', icon.toString(), {
-        collapseWhitespace: true,
-        sortAttributes: true,
-      });
-    })(),
   ]);
 });
 
