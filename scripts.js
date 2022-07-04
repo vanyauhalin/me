@@ -16,21 +16,22 @@ import html from 'html-minifier';
 import { Environment, FileSystemLoader } from 'nunjucks';
 import puppeteer from 'puppeteer';
 
-const server = createServer(({ url }, response) => {
+const server = createServer(async ({ url }, response) => {
   if (!url) return;
-  /* eslint-disable promise/prefer-await-to-then */
-  readFile(`dist${extname(url) ? url : `${url}/index.html`}`)
-    .then((data) => (
-      response
-        .writeHead(200, {
-          ...extname(url) === '.svg'
-            ? { 'Content-Type': 'image/svg+xml' }
-            : {},
-        })
-        .end(data.toString())
-    ))
-    .catch(log.warn);
-  /* eslint-enable promise/prefer-await-to-then */
+  const headers = {};
+  const extension = extname(url);
+  let file = `dist${url}`;
+  try {
+    if (extension) {
+      if (extension === '.svg') headers['Content-Type'] = 'image/svg+xml';
+    } else {
+      file += '/index.html';
+    }
+    const raw = await readFile(file);
+    response.writeHead(200, headers).end(raw.toString());
+  } catch (error) {
+    log.warn(error);
+  }
 });
 
 function writePage(file, data, options) {
