@@ -205,24 +205,26 @@ const build = script('build', async () => {
   ]);
   await script('build/hash', async () => {
     const assets = await readdir('dist/assets');
-    const hashed = [
-      ...assets.map((file) => `assets/${file}`),
-      'favicon.svg',
-      'manifest.json',
-    ].map((file) => {
-      const hash = createHash('md5').update(file).digest('hex').slice(0, 10);
-      const extension = extname(file);
-      return [
-        `/${file}`,
-        `/${file.replace(extension, `.${hash}${extension}`)}`,
-      ];
-    });
-    const pages = await findFiles('dist', '.html');
-    await Promise.all([
+    const hashable = [
       ...assets.map((file) => `dist/assets/${file}`),
-      ...pages,
+      'dist/favicon.svg',
       'dist/manifest.json',
-    ].map(async (file) => {
+    ];
+    const hashed = await Promise.all(hashable.map(async (file) => {
+      const raw = await readFile(file);
+      const hash = createHash('md5')
+        .update(raw.toString())
+        .digest('hex')
+        .slice(0, 10);
+      const extension = extname(file);
+      const resolved = file.replace('dist', '');
+      return [
+        resolved,
+        resolved.replace(extension, `.${hash}${extension}`),
+      ];
+    }));
+    const pages = await findFiles('dist', '.html');
+    await Promise.all([...hashable, ...pages].map(async (file) => {
       const raw = await readFile(file);
       let content = raw.toString();
       for (const [non, modified] of hashed) {
