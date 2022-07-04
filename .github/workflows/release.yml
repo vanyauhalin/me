@@ -33,7 +33,7 @@ jobs:
             --no-checkout \
             --single-branch \
             --branch "gh-pages" \
-            "https://$GITHUB_TOKEN@github.com/$REPOSITORY.git" \
+            "https://$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY.git" \
             temp
           mv temp/.git .
           git add .
@@ -42,4 +42,4 @@ jobs:
         working-directory: ./dist
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          REPOSITORY: ${{ github.repository }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
