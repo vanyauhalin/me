@@ -19,27 +19,23 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: pnpm build
       - run: |
-          raw="https://api.github.com/users/$ACTOR"
+          raw="https://api.github.com/users/${{ github.actor }}"
           json=$(curl --silent -H 'Accept: application/json' $raw)
           id=$(echo $json | jq --raw-output '.id')
-          git config --global user.name $ACTOR
-          git config --global user.email "$id+$ACTOR@users.noreply.github.com"
-        env:
-          ACTOR: ${{ github.actor }}
+          git config --global user.name ${{ github.actor }}
+          git config --global user.email \
+            "$id+${{ github.actor }}@users.noreply.github.com"
       - run: |
+          cd dist
           mkdir temp
           git clone \
             --quiet \
             --no-checkout \
             --single-branch \
             --branch "gh-pages" \
-            "https://$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY.git" \
+            "https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" \
             temp
           mv temp/.git .
           git add .
           git commit --quiet --message "$(date +'%H:%M %d.%m.%Y')"
           git push
-        working-directory: ./dist
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_REPOSITORY: ${{ github.repository }}
