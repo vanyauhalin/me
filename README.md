@@ -1,5 +1,14 @@
 # me
 
+<p>
+  <a href="https://github.com/vanyauhalin/me/actions">
+    <img
+      alt="ci status"
+      src="https://github.com/vanyauhalin/me/workflows/ci/badge.svg"
+    />
+  </a>
+</p>
+
 A few words about me, my projects.
 
 ## Resources
