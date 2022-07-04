@@ -88,69 +88,72 @@ const build = script('build', async () => {
         year: 'numeric',
       });
       engine.addFilter('shortDate', (value) => short.format(new Date(value)));
-
-      await script('build/404.njk', async () => {
-        const page = engine.render('templates/page.njk', {
-          ...meta,
-          content: engine.render('pages/404.njk', {
-            updated,
-            heading: meta.heading,
-            site: meta.site,
+      await Promise.all([
+        script('build/404.njk', async () => {
+          const page = engine.render('templates/page.njk', {
+            ...meta,
+            content: engine.render('pages/404.njk', {
+              updated,
+              heading: meta.heading,
+              site: meta.site,
+              url: `${meta.site}/404.html`,
+            }),
+            title: `${meta.heading} | 404`,
             url: `${meta.site}/404.html`,
-          }),
-          title: `${meta.heading} | 404`,
-          url: `${meta.site}/404.html`,
-        });
-        await writePage('dist/404.html', page);
-      })();
-      await script('build/index.njk', async () => {
-        const page = engine.render('templates/page.njk', {
-          ...meta,
-          content: engine.render('pages/index.njk', {
-            updated,
-            heading: meta.heading,
-            site: meta.site,
+          });
+          await writePage('dist/404.html', page);
+        })(),
+        script('build/index.njk', async () => {
+          const page = engine.render('templates/page.njk', {
+            ...meta,
+            content: engine.render('pages/index.njk', {
+              updated,
+              heading: meta.heading,
+              site: meta.site,
+              url: `${meta.site}/`,
+            }),
+            title: meta.heading,
             url: `${meta.site}/`,
-          }),
-          title: meta.heading,
-          url: `${meta.site}/`,
-        });
-        await writePage('dist/index.html', page);
-      })();
-      await script('build/cv.njk', async () => {
-        const data = await readFile('data/cv.json');
-        const page = engine.render('templates/page.njk', {
-          ...meta,
-          content: engine.render('pages/cv.njk', {
-            updated,
-            data: JSON.parse(data.toString()),
-            heading: meta.heading,
+          });
+          await writePage('dist/index.html', page);
+        })(),
+        script('build/cv.njk', async () => {
+          const data = await readFile('data/cv.json');
+          const page = engine.render('templates/page.njk', {
+            ...meta,
+            content: engine.render('pages/cv.njk', {
+              updated,
+              data: JSON.parse(data.toString()),
+              heading: meta.heading,
+              url: `${meta.site}/cv`,
+            }),
+            description: `Software Engineer. ${meta.description}`,
+            title: `${meta.heading} | Software Engineer`,
             url: `${meta.site}/cv`,
-          }),
-          description: `Software Engineer. ${meta.description}`,
-          title: `${meta.heading} | Software Engineer`,
-          url: `${meta.site}/cv`,
-        });
-        if (!existsSync('dist/cv')) await mkdir('dist/cv');
-        await writePage('dist/cv/index.html', page);
-        server.listen(3000);
-        const browser = await puppeteer.launch();
-        const browserPage = await browser.newPage();
-        await browserPage.goto('http://localhost:3000/cv');
-        const pdf = await browserPage.pdf({
-          displayHeaderFooter: false,
-          format: 'A4',
-          margin: {
-            top: '0.4in',
-            bottom: '0.4in',
-          },
-          printBackground: true,
-        });
-        await browser.close();
-        server.close();
-        await writeFile('dist/cv.pdf', pdf);
-        await copyFile('data/cv.json', 'dist/cv.json');
-      })();
+          });
+          if (!existsSync('dist/cv')) await mkdir('dist/cv');
+          await writePage('dist/cv/index.html', page);
+          server.listen(3000);
+          const browser = await puppeteer.launch();
+          const browserPage = await browser.newPage();
+          await browserPage.goto('http://localhost:3000/cv');
+          const pdf = await browserPage.pdf({
+            displayHeaderFooter: false,
+            format: 'A4',
+            margin: {
+              top: '0.4in',
+              bottom: '0.4in',
+            },
+            printBackground: true,
+          });
+          await browser.close();
+          server.close();
+          await Promise.all([
+            writeFile('dist/cv.pdf', pdf),
+            copyFile('data/cv.json', 'dist/cv.json'),
+          ]);
+        })(),
+      ]);
     })(),
     script('build/styles', async () => {
       const files = await readdir('src/styles');
@@ -162,19 +165,20 @@ const build = script('build', async () => {
         );
       }));
     })(),
-    script('build/images', async () => {
-      await copyFile('data/vanyauhalin.png', 'dist/vanyauhalin.png');
-      await script('build/favicon.svg', async () => {
+    script('build/images', () => Promise.all([
+      copyFile('data/vanyauhalin.png', 'dist/vanyauhalin.png'),
+      script('build/favicon.svg', async () => {
         const icon = await readFile('src/favicon.svg');
         await writePage('dist/favicon.svg', icon.toString(), {
           collapseWhitespace: true,
           sortAttributes: true,
         });
-      })();
-    })(),
-    script('copy/manifest.json', () => (
-      copyFile('src/manifest.json', 'dist/manifest.json')
-    ))(),
+      })(),
+    ]))(),
+    script('copy/files', () => Promise.all([
+      copyFile('src/manifest.json', 'dist/manifest.json'),
+      copyFile('src/CNAME', 'dist/CNAME'),
+    ]))(),
   ]);
 });
 
