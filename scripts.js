@@ -4,6 +4,7 @@ import {
   mkdir,
   readFile,
   readdir,
+  rm,
   writeFile,
 } from 'node:fs/promises';
 import { createServer } from 'node:http';
@@ -45,8 +46,9 @@ function writePage(file, data, options) {
 }
 
 const build = script('build', async () => {
-  if (!existsSync('dist')) await mkdir('dist');
-  if (!existsSync('dist/assets')) await mkdir('dist/assets');
+  if (existsSync('dist')) await rm('dist', { force: true, recursive: true });
+  await mkdir('dist');
+  await mkdir('dist/assets');
   await Promise.all([
     script('build/components', async () => {
       const components = await readdir('src/components');
