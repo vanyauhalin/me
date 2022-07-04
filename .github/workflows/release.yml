@@ -27,19 +27,19 @@ jobs:
         env:
           ACTOR: ${{ github.actor }}
       - run: |
+          mkdir temp
           git clone \
             --quiet \
             --no-checkout \
             --single-branch \
             --branch "gh-pages" \
-            "https://$RELEASE_TOKEN@github.com/$REPOSITORY.git" \
-            .
+            "https://$GITHUB_TOKEN@github.com/$REPOSITORY.git" \
+            temp
+          mv temp/.git .
           git add .
-          git commit \
-            --quiet \
-            --message "$(date +'%H:%M %d.%m.%Y')"
+          git commit --quiet --message "$(date +'%H:%M %d.%m.%Y')"
           git push
         working-directory: ./dist
         env:
-          RELEASE_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPOSITORY: ${{ github.repository }}
