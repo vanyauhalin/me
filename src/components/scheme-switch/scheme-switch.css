@@ -20,6 +20,7 @@ input {
   height: 100%;
   margin: 0;
   opacity: 0;
+  width: 100%;
 }
 
 input:not(:checked)[value=light] {
@@ -32,6 +33,7 @@ input:checked[value=system] + input:not(:checked)[value=dark] {
 }
 
 span {
+  color: var(--cl-accent);
   grid-column: 1;
   grid-row: 1;
 }
