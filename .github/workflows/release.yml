@@ -33,7 +33,7 @@ jobs:
             --no-checkout \
             --single-branch \
             --branch "gh-pages" \
-            "https://github.com/${{ github.repository }}.git" \
+            https://${{ secrets.RELEASE_TOKEN }}@github.com/${{ github.repository }}.git \
             temp
           mv temp/.git .
           git add .
