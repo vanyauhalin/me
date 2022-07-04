@@ -37,5 +37,5 @@ jobs:
             temp
           mv temp/.git .
           git add .
-          git commit --quiet --message "$(date +'%H:%M %d.%m.%Y')"
+          git commit --quiet --message "$(date -u)"
           git push
