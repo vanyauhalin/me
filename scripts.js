@@ -1,9 +1,11 @@
+import { createHash } from 'node:crypto';
 import { existsSync } from 'node:fs';
 import {
   copyFile,
   mkdir,
   readFile,
   readdir,
+  rename,
   rm,
   writeFile,
 } from 'node:fs/promises';
@@ -33,6 +35,24 @@ const server = createServer(async ({ url }, response) => {
     log.warn(error);
   }
 });
+
+async function findFiles(directory, extension) {
+  const matched = [];
+  async function deep(sub) {
+    const dirents = await readdir(sub, { withFileTypes: true });
+    await Promise.all(dirents.map(async (dirent) => {
+      const file = `${sub}/${dirent.name}`;
+      if (dirent.isDirectory()) {
+        await deep(file);
+        return;
+      }
+      if (!(dirent.isFile() && dirent.name.endsWith(extension))) return;
+      matched.push(file);
+    }));
+  }
+  await deep(directory);
+  return matched;
+}
 
 function writePage(file, data, options) {
   return writeFile(file, html.minify(data, options || {
@@ -183,6 +203,37 @@ const build = script('build', async () => {
       copyFile('src/CNAME', 'dist/CNAME'),
     ]))(),
   ]);
+  await script('build/hash', async () => {
+    const assets = await readdir('dist/assets');
+    const hashed = [
+      ...assets.map((file) => `assets/${file}`),
+      'favicon.svg',
+      'manifest.json',
+    ].map((file) => {
+      const hash = createHash('md5').update(file).digest('hex').slice(0, 10);
+      const extension = extname(file);
+      return [
+        `/${file}`,
+        `/${file.replace(extension, `.${hash}${extension}`)}`,
+      ];
+    });
+    const pages = await findFiles('dist', '.html');
+    await Promise.all([
+      ...assets.map((file) => `dist/assets/${file}`),
+      ...pages,
+      'dist/manifest.json',
+    ].map(async (file) => {
+      const raw = await readFile(file);
+      let content = raw.toString();
+      for (const [non, modified] of hashed) {
+        content = content.replace(non, modified);
+      }
+      await writeFile(file, content);
+    }));
+    await Promise.all(hashed.map(([non, modified]) => (
+      rename(`dist${non}`, `dist${modified}`)
+    )));
+  })();
 });
 
 script('serve', async () => {
