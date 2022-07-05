@@ -1,0 +1,4 @@
+--container-architecture linux/amd64
+-P ubuntu-latest=node:16-buster-slim
+-P ubuntu-20.04=node:16-buster-slim
+-P ubuntu-18.04=node:16-buster-slim

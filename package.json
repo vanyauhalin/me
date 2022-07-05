@@ -8,6 +8,7 @@
   "author": "Ivan Uhalin <vanyauhalin@gmail.com>",
   "type": "module",
   "scripts": {
+    "build-act": "node scripts.environment.js",
     "build-brew": "node scripts.environment.js",
     "build-editorconfig": "node scripts.environment.js",
     "build-git": "node scripts.environment.js",

@@ -34,6 +34,8 @@ function copyLocal(from, to) {
   };
 }
 
+script('build-act', copyLocal('~/.actrc', 'act/.actrc'));
+
 script('build-brew', () => Promise.all([
   script('build-brew/cask', writeCli('brew list --cask', 'brew/cask'))(),
   script('build-brew/formulae', writeCli('brew leaves', 'brew/formulae'))(),
