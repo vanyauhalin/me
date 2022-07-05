@@ -11,6 +11,7 @@
     "build-act": "node scripts.environment.js",
     "build-brew": "node scripts.environment.js",
     "build-editorconfig": "node scripts.environment.js",
+    "build-fnm": "node scripts.environment.js",
     "build-git": "node scripts.environment.js",
     "build": "nosock",
     "lint": "eslint . && stylelint src/**/*.css",
