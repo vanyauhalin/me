@@ -68,4 +68,10 @@ script('build-go', () => Promise.all([
   )))(),
 ]));
 
+script('build-npm', writeCli(
+  'npm list --depth 0 --no-unicode -g',
+  'npm/list',
+  (data) => data.replace(/.*\n/, '').replace(/[+`]-- /g, ''),
+));
+
 script.exec();
