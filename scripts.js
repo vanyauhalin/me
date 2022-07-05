@@ -338,6 +338,24 @@ script('build-env', () => Promise.all([
     'npm/list',
     (data) => data.replace(/.*\n/, '').replace(/[+`]-- /g, ''),
   ))(),
+  script('build-env/vscode', () => Promise.all([
+    script('build-env/vscode/extensions', writeCli(
+      'ls ~/.vscode/extensions',
+      'vscode/extensions',
+    ))(),
+    script('build-env/vscode/keybindings', copyLocal(
+      '~/Library/Application Support/Code/User/keybindings.json',
+      'vscode/keybindings.json',
+    ))(),
+    script('build-env/vscode/styles', copyLocal(
+      '~/.vscode/markdown.styles.css',
+      'vscode/markdown.styles.css',
+    ))(),
+    script('build-env/vscode/settings', copyLocal(
+      '~/Library/Application Support/Code/User/settings.json',
+      'vscode/settings.json',
+    ))(),
+  ]))(),
 ]));
 
 // ---

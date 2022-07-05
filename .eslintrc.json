@@ -1,3 +1,6 @@
 {
-  "extends": "@vanyauhalin/eslint-config-base"
+  "extends": "@vanyauhalin/eslint-config-base",
+  "ignorePatterns": [
+    "env/**"
+  ]
 }
