@@ -393,6 +393,21 @@ script('icons', async () => {
   )));
 });
 
+function copyToLocal(from, to) {
+  return () => copyFile(`${DIRNAME}/env/${from}`, to.replace('~', homedir()));
+}
+
+script('i-git', () => Promise.all([
+  script('i-git/.gitconfig', copyToLocal(
+    'git/.gitconfig',
+    '~/.gitconfig',
+  ))(),
+  script('i-git/.gitignore', copyToLocal(
+    'git/.gitignore',
+    '~/.gitignore',
+  ))(),
+]));
+
 // ---
 
 script.exec();

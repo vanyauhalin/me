@@ -10,6 +10,7 @@
   "scripts": {
     "build-env": "nosock",
     "build": "nosock",
+    "i-git": "nosock",
     "icons": "sudo node scripts.js icons",
     "lint": "eslint . && stylelint src/**/*.css",
     "serve": "nosock"
