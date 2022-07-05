@@ -8,6 +8,7 @@
   "author": "Ivan Uhalin <vanyauhalin@gmail.com>",
   "type": "module",
   "scripts": {
+    "build-brew": "node scripts.environment.js",
     "build": "nosock",
     "lint": "eslint . && stylelint src/**/*.css",
     "serve": "nosock"
