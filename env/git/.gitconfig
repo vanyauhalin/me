@@ -25,10 +25,3 @@
 [user]
 	name = vanyauhalin
 	email = vanyauhalin@gmail.com
-
-#
-# Projects
-#
-
-[includeIf "gitdir:$LOCAL_ROOT/pochtatech/"]
-	path = $LOCAL_ROOT/pochtatech/.gitconfig
