@@ -28,7 +28,7 @@ async function createDirectory(to) {
   return file;
 }
 
-function writeCli(line, to, callback) {
+function exportCli(line, to, callback) {
   return async () => {
     const [command, ...arguments_] = line.split(' ');
     const process = spawnSync(command, arguments_.map((argument) => (
@@ -43,15 +43,19 @@ function writeCli(line, to, callback) {
   };
 }
 
-function copyLocal(from, to) {
+function exportFile(from, to) {
   return async () => {
     const file = await createDirectory(to);
     await copyFile(from.replace('~', homedir()), file);
   };
 }
 
-function copyToLocal(from, to) {
+function installFile(from, to) {
   return () => copyFile(`${DIRNAME}/env/${from}`, to.replace('~', homedir()));
+}
+
+function localFile(from, to) {
+  return () => copyFile(from.replace('~', homedir()), `${env.PWD}/${to}`);
 }
 
 function checkSpawn(callback) {
@@ -60,14 +64,14 @@ function checkSpawn(callback) {
   if (error) throw new Error(error);
 }
 
-const pack = await readFile('package.json');
+const pack = await readFile(`${DIRNAME}/package.json`);
 const me = sade('me').version(JSON.parse(pack.toString()).version);
 
 // ---
 
 me.command('export act')
   .alias('e act')
-  .action(script('export act', copyLocal(
+  .action(script('export act', exportFile(
     '~/.actrc',
     'act/.actrc',
   )));
@@ -75,11 +79,11 @@ me.command('export act')
 me.command('export brew')
   .alias('e brew')
   .action(script('export brew', parallel(
-    script('export brew/cask', writeCli(
+    script('export brew/cask', exportCli(
       'brew list --cask',
       'brew/cask',
     )),
-    script('export brew/formulae', writeCli(
+    script('export brew/formulae', exportCli(
       'brew leaves',
       'brew/formulae',
     )),
@@ -87,14 +91,14 @@ me.command('export brew')
 
 me.command('export editorconfig')
   .alias('e editorconfig')
-  .action(script('export editorconfig', copyLocal(
+  .action(script('export editorconfig', exportFile(
     '~/.editorconfig',
     'editorconfig/.editorconfig',
   )));
 
 me.command('export fnm')
   .alias('e fnm')
-  .action(script('export fnm', writeCli(
+  .action(script('export fnm', exportCli(
     'fnm env',
     'fnm/env',
     (data) => `${data.match(/FNM_DIR.*/)[0]}`,
@@ -103,11 +107,11 @@ me.command('export fnm')
 me.command('export git')
   .alias('e git')
   .action(script('export git', parallel(
-    script('export git/.gitconfig', copyLocal(
+    script('export git/.gitconfig', exportFile(
       '~/.gitconfig',
       'git/.gitconfig',
     )),
-    script('export git/.gitignore', copyLocal(
+    script('export git/.gitignore', exportFile(
       '~/.gitignore',
       'git/.gitignore',
     )),
@@ -116,11 +120,11 @@ me.command('export git')
 me.command('export go')
   .alias('e go')
   .action(script('export go', parallel(
-    script('export go/bin', writeCli(
+    script('export go/bin', exportCli(
       'ls -1 ~/.go/bin',
       'go/bin',
     )),
-    script('export go/env', writeCli(
+    script('export go/env', exportCli(
       'go env',
       'go/env',
       (data) => (
@@ -131,7 +135,7 @@ me.command('export go')
 
 me.command('export npm')
   .alias('e npm')
-  .action(script('export npm', writeCli(
+  .action(script('export npm', exportCli(
     'npm list --depth 0 --no-unicode -g',
     'npm/list',
     (data) => data.replace(/.*\n/, '').replace(/[+`]-- /g, ''),
@@ -140,19 +144,19 @@ me.command('export npm')
 me.command('export vscode')
   .alias('e vscode')
   .action(script('export vscode', parallel(
-    script('export vscode/extensions', writeCli(
+    script('export vscode/extensions', exportCli(
       'ls ~/.vscode/extensions',
       'vscode/extensions',
     )),
-    script('export vscode/keybindings', copyLocal(
+    script('export vscode/keybindings', exportFile(
       '~/Library/Application Support/Code/User/keybindings.json',
       'vscode/keybindings.json',
     )),
-    script('export vscode/styles', copyLocal(
+    script('export vscode/styles', exportFile(
       '~/.vscode/markdown.styles.css',
       'vscode/markdown.styles.css',
     )),
-    script('export vscode/settings', copyLocal(
+    script('export vscode/settings', exportFile(
       '~/Library/Application Support/Code/User/settings.json',
       'vscode/settings.json',
     )),
@@ -160,7 +164,7 @@ me.command('export vscode')
 
 me.command('export zsh')
   .alias('e zsh')
-  .action(script('export zsh', copyLocal(
+  .action(script('export zsh', exportFile(
     '~/.zshrc',
     'zsh/.zshrc',
   )));
@@ -182,7 +186,7 @@ me.command('export all')
 
 me.command('install editorconfig')
   .alias('i editorconfig')
-  .action(script('install editorconfig', copyToLocal(
+  .action(script('install editorconfig', installFile(
     'editorconfig/.editorconfig',
     '~/.editorconfig',
   )));
@@ -190,11 +194,11 @@ me.command('install editorconfig')
 me.command('install git')
   .alias('i git')
   .action(script('install git', parallel(
-    script('install git/.gitconfig', copyToLocal(
+    script('install git/.gitconfig', installFile(
       'git/.gitconfig',
       '~/.gitconfig',
     )),
-    script('install git/.gitignore', copyToLocal(
+    script('install git/.gitignore', installFile(
       'git/.gitignore',
       '~/.gitignore',
     )),
@@ -237,13 +241,22 @@ me.command('install icons')
 me.command('install zsh')
   .alias('i zsh')
   .action(script('install zsh', async () => {
-    await copyToLocal('zsh/.zshrc', '~/.zshrc')();
+    await installFile('zsh/.zshrc', '~/.zshrc')();
     try {
-      execSync(`source ${homedir}/.zshrc`);
+      execSync(`source ${homedir()}/.zshrc`);
     } catch {
       // This is fine.
     }
   }));
+
+// ---
+
+me.command('local editorconfig')
+  .alias('l editorconfig')
+  .action(script('local editorconfig', localFile(
+    '~/.editorconfig',
+    '.editorconfig',
+  )));
 
 // ---
 
