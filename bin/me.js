@@ -5,6 +5,7 @@ import {
   mkdir,
   readFile,
   readdir,
+  symlink,
   writeFile,
 } from 'node:fs/promises';
 import { homedir, tmpdir } from 'node:os';
@@ -21,11 +22,18 @@ function parallel(...actions) {
   return () => Promise.all(actions.map((action) => action()));
 }
 
-async function createDirectory(to) {
-  const file = `${DIRNAME}/env/${to}`;
+async function createDirectory(file) {
   const directory = file.replace(new RegExp(`/${basename(file)}$`), '');
   if (!existsSync(directory)) await mkdir(directory, { recursive: true });
   return file;
+}
+
+function createAppDirectory(to) {
+  return createDirectory(`${DIRNAME}/env/${to}`);
+}
+
+function createLocalDirectory(to) {
+  return createDirectory(`${env.PWD}/${to}`);
 }
 
 function exportCli(line, to, callback) {
@@ -38,14 +46,14 @@ function exportCli(line, to, callback) {
     if (error) throw new Error(error);
     let data = process.stdout.toString();
     if (callback) data = callback(data);
-    const file = await createDirectory(to);
+    const file = await createAppDirectory(to);
     await writeFile(file, data);
   };
 }
 
 function exportFile(from, to) {
   return async () => {
-    const file = await createDirectory(to);
+    const file = await createAppDirectory(to);
     await copyFile(from.replace('~', homedir()), file);
   };
 }
@@ -55,7 +63,17 @@ function installFile(from, to) {
 }
 
 function localFile(from, to) {
-  return () => copyFile(from.replace('~', homedir()), `${env.PWD}/${to}`);
+  return async () => {
+    const file = await createLocalDirectory(to);
+    await copyFile(from.replace('~', homedir()), file);
+  };
+}
+
+function localLink(from, to) {
+  return async () => {
+    const file = await createLocalDirectory(to);
+    await symlink(from.replace('~', homedir()), file);
+  };
 }
 
 function checkSpawn(callback) {
@@ -256,6 +274,13 @@ me.command('local editorconfig')
   .action(script('local editorconfig', localFile(
     '~/.editorconfig',
     '.editorconfig',
+  )));
+
+me.command('local vscode')
+  .alias('l vscode')
+  .action(script('local vscode', localLink(
+    '~/.vscode/markdown.styles.css',
+    '.vscode/markdown.styles.css',
   )));
 
 // ---
