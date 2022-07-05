@@ -1,13 +1,3 @@
 {
-  "extends": "@vanyauhalin/eslint-config-base",
-  "rules": {
-    "import/no-extraneous-dependencies": [
-      "error",
-      {
-        "devDependencies": [
-          "**/scripts.*"
-        ]
-      }
-    ]
-  }
+  "extends": "@vanyauhalin/eslint-config-base"
 }
