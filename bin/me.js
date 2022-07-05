@@ -1,4 +1,4 @@
-import { spawnSync } from 'node:child_process';
+import { execSync, spawnSync } from 'node:child_process';
 import { existsSync } from 'node:fs';
 import {
   copyFile,
@@ -56,7 +56,7 @@ function copyToLocal(from, to) {
 
 function checkSpawn(callback) {
   const process = callback();
-  const error = process.stderr.toString();
+  const error = process.error ? process.error : process.stderr.toString();
   if (error) throw new Error(error);
 }
 
@@ -232,6 +232,17 @@ me.command('install icons')
         checkSpawn(() => spawnSync('touch', [app]));
       })()
     )));
+  }));
+
+me.command('install zsh')
+  .alias('i zsh')
+  .action(script('install zsh', async () => {
+    await copyToLocal('zsh/.zshrc', '~/.zshrc')();
+    try {
+      execSync(`source ${homedir}/.zshrc`);
+    } catch {
+      // This is fine.
+    }
   }));
 
 // ---
