@@ -158,6 +158,13 @@ me.command('export vscode')
     )),
   )));
 
+me.command('export zsh')
+  .alias('e zsh')
+  .action(script('export zsh', copyLocal(
+    '~/.zshrc',
+    'zsh/.zshrc',
+  )));
+
 me.command('export all')
   .alias('e all')
   .action(async () => {
