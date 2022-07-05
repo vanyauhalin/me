@@ -1,6 +1,7 @@
 import { spawnSync } from 'node:child_process';
 import { existsSync } from 'node:fs';
-import { mkdir, writeFile } from 'node:fs/promises';
+import { copyFile, mkdir, writeFile } from 'node:fs/promises';
+import { homedir } from 'node:os';
 import { basename, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { script } from '@vanyauhalin/nosock';
@@ -26,9 +27,21 @@ function writeCli(line, to) {
   };
 }
 
+function copyLocal(from, to) {
+  return async () => {
+    const file = await createDirectory(to);
+    await copyFile(from.replace('~', homedir()), file);
+  };
+}
+
 script('build-brew', () => Promise.all([
   script('build-brew/cask', writeCli('brew list --cask', 'brew/cask'))(),
   script('build-brew/formulae', writeCli('brew leaves', 'brew/formulae'))(),
 ]));
+
+script('build-editorconfig', copyLocal(
+  '~/.editorconfig',
+  'editorconfig/.editorconfig',
+));
 
 script.exec();
