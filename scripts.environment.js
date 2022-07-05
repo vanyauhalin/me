@@ -44,4 +44,9 @@ script('build-editorconfig', copyLocal(
   'editorconfig/.editorconfig',
 ));
 
+script('build-git', () => Promise.all([
+  script('git-gitconfig', copyLocal('~/.gitconfig', 'git/.gitconfig'))(),
+  script('git-gitignore', copyLocal('~/.gitignore', 'git/.gitignore'))(),
+]));
+
 script.exec();
