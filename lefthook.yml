@@ -7,7 +7,7 @@ pre-commit:
   parallel: true
   commands:
     lint-base:
-      glob: "*.{json,ts,yaml,yml}"
+      glob: "*.{json,js,ts,yaml,yml}"
       run: eslint {staged_files}
     lint-styles:
       glob: "*.css"
