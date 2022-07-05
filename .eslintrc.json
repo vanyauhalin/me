@@ -2,8 +2,9 @@
   "extends": "@vanyauhalin/eslint-config-base",
   "overrides": [
     {
-      "files": "scripts.js",
+      "files": "bin/me.js",
       "rules": {
+        "import/no-extraneous-dependencies": "off",
         "promise/prefer-await-to-callbacks": "off"
       }
     }

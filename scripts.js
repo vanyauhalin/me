@@ -1,4 +1,3 @@
-import { spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { existsSync } from 'node:fs';
 import {
@@ -11,17 +10,13 @@ import {
   writeFile,
 } from 'node:fs/promises';
 import { createServer } from 'node:http';
-import { homedir, tmpdir } from 'node:os';
-import { basename, dirname, extname } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { extname } from 'node:path';
 import { log, script } from '@vanyauhalin/nosock';
 import * as csso from 'csso';
 import esbuild from 'esbuild';
 import html from 'html-minifier';
 import { Environment, FileSystemLoader } from 'nunjucks';
 import puppeteer from 'puppeteer';
-
-// ---
 
 const server = createServer(async ({ url }, response) => {
   if (!url) return;
@@ -249,165 +244,5 @@ script('serve', async () => {
     server.listen(8080);
   });
 });
-
-// ---
-
-const FILENAME = fileURLToPath(import.meta.url);
-const DIRNAME = dirname(FILENAME);
-
-async function createDirectory(to) {
-  const file = `${DIRNAME}/env/${to}`;
-  const directory = file.replace(new RegExp(`/${basename(file)}$`), '');
-  if (!existsSync(directory)) await mkdir(directory, { recursive: true });
-  return file;
-}
-
-function writeCli(line, to, callback) {
-  return async () => {
-    const [command, ...arguments_] = line.split(' ');
-    const process = spawnSync(command, arguments_.map((argument) => (
-      argument.replace('~', homedir())
-    )));
-    const error = process.stderr.toString();
-    if (error) throw new Error(error);
-    let data = process.stdout.toString();
-    if (callback) data = callback(data);
-    const file = await createDirectory(to);
-    await writeFile(file, data);
-  };
-}
-
-function copyLocal(from, to) {
-  return async () => {
-    const file = await createDirectory(to);
-    await copyFile(from.replace('~', homedir()), file);
-  };
-}
-
-script('build-env', () => Promise.all([
-  script('build-env/act', copyLocal(
-    '~/.actrc',
-    'act/.actrc',
-  ))(),
-  script('build-env/brew', () => Promise.all([
-    script('build-env/brew/cask', writeCli(
-      'brew list --cask',
-      'brew/cask',
-    ))(),
-    script('build-env/brew/formulae', writeCli(
-      'brew leaves',
-      'brew/formulae',
-    ))(),
-  ]))(),
-  script('build-env/.editorconfig', copyLocal(
-    '~/.editorconfig',
-    'editorconfig/.editorconfig',
-  ))(),
-  script('build-env/fnm', writeCli(
-    'fnm env',
-    'fnm/env',
-    (data) => `${data.match(/FNM_DIR.*/)[0]}`,
-  ))(),
-  script('build-env/git', () => Promise.all([
-    script('build-env/git/.gitconfig', copyLocal(
-      '~/.gitconfig',
-      'git/.gitconfig',
-    ))(),
-    script('build-env/git/.gitignore', copyLocal(
-      '~/.gitignore',
-      'git/.gitignore',
-    ))(),
-  ]))(),
-  script('build-env/go', () => Promise.all([
-    script('build-env/go/bin', writeCli(
-      'ls -1 ~/.go/bin',
-      'go/bin',
-    ))(),
-    script('build-env/go/env', writeCli(
-      'go env',
-      'go/env',
-      (data) => (
-        `${data.match(/GO111MODULE.*/)[0]}\n${data.match(/GOPATH.*/)[0]}`
-      ),
-    ))(),
-  ]))(),
-  script('build-env/npm', writeCli(
-    'npm list --depth 0 --no-unicode -g',
-    'npm/list',
-    (data) => data.replace(/.*\n/, '').replace(/[+`]-- /g, ''),
-  ))(),
-  script('build-env/vscode', () => Promise.all([
-    script('build-env/vscode/extensions', writeCli(
-      'ls ~/.vscode/extensions',
-      'vscode/extensions',
-    ))(),
-    script('build-env/vscode/keybindings', copyLocal(
-      '~/Library/Application Support/Code/User/keybindings.json',
-      'vscode/keybindings.json',
-    ))(),
-    script('build-env/vscode/styles', copyLocal(
-      '~/.vscode/markdown.styles.css',
-      'vscode/markdown.styles.css',
-    ))(),
-    script('build-env/vscode/settings', copyLocal(
-      '~/Library/Application Support/Code/User/settings.json',
-      'vscode/settings.json',
-    ))(),
-  ]))(),
-]));
-
-function checkSpawn(callback) {
-  const process = callback();
-  const error = process.stderr.toString();
-  if (error) throw new Error(error);
-}
-
-/**
- * @see https://stackoverflow.com/questions/54708191
- * @see https://stackoverflow.com/questions/8371790
- */
-script('icons', async () => {
-  async function findApp(name, directory = '/Applications') {
-    const app = `${name}.app`;
-    const apps = await readdir(directory);
-    if (apps.includes(app)) return `${directory}/${app}`;
-    if (apps.includes(name)) return findApp(name, `${directory}/${name}`);
-    throw new Error(`${name} not found`);
-  }
-  const sources = `${DIRNAME}/resources/icons`;
-  const icons = await readdir(sources);
-  const temporary = `${tmpdir()}/icons`;
-  if (!existsSync(temporary)) await mkdir(temporary);
-  await Promise.all(icons.map((icon) => (
-    script(`icons/${icon}`, async () => {
-      await copyFile(`${sources}/${icon}`, `${temporary}/${icon}`);
-      const resource = `${temporary}/${icon.replace('.icns', '.rsrc')}`;
-      await writeFile(resource, `read 'icns' (-16455) "${icon}";`);
-      const app = await findApp(icon.replace('.icns', ''));
-      const record = `${app}/Icon\r`;
-      checkSpawn(() => spawnSync('Rez', ['-a', resource, '-o', record]));
-      checkSpawn(() => spawnSync('SetFile', ['-a', 'C', app]));
-      checkSpawn(() => spawnSync('SetFile', ['-a', 'V', record]));
-      checkSpawn(() => spawnSync('touch', [app]));
-    })()
-  )));
-});
-
-function copyToLocal(from, to) {
-  return () => copyFile(`${DIRNAME}/env/${from}`, to.replace('~', homedir()));
-}
-
-script('i-git', () => Promise.all([
-  script('i-git/.gitconfig', copyToLocal(
-    'git/.gitconfig',
-    '~/.gitconfig',
-  ))(),
-  script('i-git/.gitignore', copyToLocal(
-    'git/.gitignore',
-    '~/.gitignore',
-  ))(),
-]));
-
-// ---
 
 script.exec();
