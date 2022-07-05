@@ -173,6 +173,13 @@ me.command('export all')
 
 // ---
 
+me.command('install editorconfig')
+  .alias('i editorconfig')
+  .action(script('install editorconfig', copyToLocal(
+    'editorconfig/.editorconfig',
+    '~/.editorconfig',
+  )));
+
 me.command('install git')
   .alias('i git')
   .action(script('install git', parallel(
