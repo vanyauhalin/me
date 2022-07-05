@@ -1,5 +1,13 @@
 {
   "extends": "@vanyauhalin/eslint-config-base",
+  "overrides": [
+    {
+      "files": "scripts.js",
+      "rules": {
+        "promise/prefer-await-to-callbacks": "off"
+      }
+    }
+  ],
   "ignorePatterns": [
     "env/**"
   ]

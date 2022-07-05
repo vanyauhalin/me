@@ -11,7 +11,7 @@ import {
   writeFile,
 } from 'node:fs/promises';
 import { createServer } from 'node:http';
-import { homedir } from 'node:os';
+import { homedir, tmpdir } from 'node:os';
 import { basename, dirname, extname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { log, script } from '@vanyauhalin/nosock';
@@ -262,7 +262,6 @@ async function createDirectory(to) {
   return file;
 }
 
-/* eslint-disable promise/prefer-await-to-callbacks */
 function writeCli(line, to, callback) {
   return async () => {
     const [command, ...arguments_] = line.split(' ');
@@ -277,7 +276,6 @@ function writeCli(line, to, callback) {
     await writeFile(file, data);
   };
 }
-/* eslint-enable promise/prefer-await-to-callbacks */
 
 function copyLocal(from, to) {
   return async () => {
@@ -357,6 +355,43 @@ script('build-env', () => Promise.all([
     ))(),
   ]))(),
 ]));
+
+function checkSpawn(callback) {
+  const process = callback();
+  const error = process.stderr.toString();
+  if (error) throw new Error(error);
+}
+
+/**
+ * @see https://stackoverflow.com/questions/54708191
+ * @see https://stackoverflow.com/questions/8371790
+ */
+script('icons', async () => {
+  async function findApp(name, directory = '/Applications') {
+    const app = `${name}.app`;
+    const apps = await readdir(directory);
+    if (apps.includes(app)) return `${directory}/${app}`;
+    if (apps.includes(name)) return findApp(name, `${directory}/${name}`);
+    throw new Error(`${name} not found`);
+  }
+  const sources = `${DIRNAME}/resources/icons`;
+  const icons = await readdir(sources);
+  const temporary = `${tmpdir()}/icons`;
+  if (!existsSync(temporary)) await mkdir(temporary);
+  await Promise.all(icons.map((icon) => (
+    script(`icons/${icon}`, async () => {
+      await copyFile(`${sources}/${icon}`, `${temporary}/${icon}`);
+      const resource = `${temporary}/${icon.replace('.icns', '.rsrc')}`;
+      await writeFile(resource, `read 'icns' (-16455) "${icon}";`);
+      const app = await findApp(icon.replace('.icns', ''));
+      const record = `${app}/Icon\r`;
+      checkSpawn(() => spawnSync('Rez', ['-a', resource, '-o', record]));
+      checkSpawn(() => spawnSync('SetFile', ['-a', 'C', app]));
+      checkSpawn(() => spawnSync('SetFile', ['-a', 'V', record]));
+      checkSpawn(() => spawnSync('touch', [app]));
+    })()
+  )));
+});
 
 // ---
 
