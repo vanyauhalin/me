@@ -20,7 +20,9 @@ async function createDirectory(to) {
 function writeCli(line, to, callback) {
   return async () => {
     const [command, ...arguments_] = line.split(' ');
-    const process = spawnSync(command, arguments_);
+    const process = spawnSync(command, arguments_.map((argument) => (
+      argument.replace('~', homedir())
+    )));
     const error = process.stderr.toString();
     if (error) throw new Error(error);
     let data = process.stdout.toString();
@@ -50,14 +52,20 @@ script('build-editorconfig', copyLocal(
   'editorconfig/.editorconfig',
 ));
 
-script('build-fnm', writeCli('fnm env', 'fnm/env', (data) => {
-  const [directory] = data.match(/FNM_DIR.*/);
-  return directory || data;
-}));
+script('build-fnm', writeCli('fnm env', 'fnm/env', (data) => (
+  `${data.match(/FNM_DIR.*/)[0]}`
+)));
 
 script('build-git', () => Promise.all([
   script('git-gitconfig', copyLocal('~/.gitconfig', 'git/.gitconfig'))(),
   script('git-gitignore', copyLocal('~/.gitignore', 'git/.gitignore'))(),
+]));
+
+script('build-go', () => Promise.all([
+  script('build-go/bin', writeCli('ls -1 ~/.go/bin', 'go/bin'))(),
+  script('build-go/env', writeCli('go env', 'go/env', (data) => (
+    `${data.match(/GO111MODULE.*/)[0]}\n${data.match(/GOPATH.*/)[0]}`
+  )))(),
 ]));
 
 script.exec();
