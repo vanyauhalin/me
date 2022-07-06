@@ -18,6 +18,8 @@ import sade from 'sade';
 const HOMEDIR = homedir();
 const FILENAME = fileURLToPath(import.meta.url);
 const DIRNAME = dirname(resolve(`${FILENAME}/..`));
+const pack = await readFile(`${DIRNAME}/package.json`);
+const me = sade('me').version(JSON.parse(pack.toString()).version);
 
 function tilde(path) {
   return path.replace('~', HOMEDIR);
@@ -33,12 +35,10 @@ async function createDirectory(file) {
   return file;
 }
 
+// ---
+
 function createAppDirectory(to) {
   return createDirectory(`${DIRNAME}/env/${to}`);
-}
-
-function createLocalDirectory(to) {
-  return createDirectory(`${env.PWD}/${to}`);
 }
 
 function exportCli(line, to, callback) {
@@ -62,35 +62,6 @@ function exportFile(from, to) {
     await copyFile(tilde(from), file);
   };
 }
-
-function installFile(from, to) {
-  return () => copyFile(`${DIRNAME}/env/${from}`, tilde(to));
-}
-
-function localFile(from, to) {
-  return async () => {
-    const file = await createLocalDirectory(to);
-    await copyFile(tilde(from), file);
-  };
-}
-
-function localLink(from, to) {
-  return async () => {
-    const file = await createLocalDirectory(to);
-    await symlink(tilde(from), file);
-  };
-}
-
-function checkSpawn(callback) {
-  const process = callback();
-  const error = process.error ? process.error : process.stderr.toString();
-  if (error) throw new Error(error);
-}
-
-const pack = await readFile(`${DIRNAME}/package.json`);
-const me = sade('me').version(JSON.parse(pack.toString()).version);
-
-// ---
 
 me.command('export act')
   .alias('e act')
@@ -217,6 +188,10 @@ me.command('export all')
 
 // ---
 
+function installFile(from, to) {
+  return () => copyFile(`${DIRNAME}/env/${from}`, tilde(to));
+}
+
 me.command('install editorconfig')
   .alias('i editorconfig')
   .action(script('install editorconfig', installFile(
@@ -236,6 +211,12 @@ me.command('install git')
       '~/.gitignore',
     )),
   )));
+
+function checkSpawn(callback) {
+  const process = callback();
+  const error = process.error ? process.error : process.stderr.toString();
+  if (error) throw new Error(error);
+}
 
 /**
  * @see https://stackoverflow.com/questions/54708191
@@ -271,6 +252,51 @@ me.command('install icons')
     )));
   }));
 
+const EMAIL = 'vanyauhalin@gmail.com';
+const DEVICE = 'macbook-q6l4';
+
+function keygen(file) {
+  execSync(`
+    ssh-keygen \
+      -C ${EMAIL} \
+      -N "" \
+      -f ${file} \
+      -t ed25519 \
+      -q \
+      <<< y \
+      > /dev/null \
+      2>&1
+  `);
+}
+
+me.command('install ssh [domain]')
+  .alias('i ssh')
+  .option('-f, --force', 'Do not check if domain exists', false)
+  .action(script('install ssh', async (domain, options) => {
+    if (domain) {
+      await script(`install ssh/${domain}`, () => {
+        const file = tilde(`~/.ssh/${domain}`);
+        if (!options.force && existsSync(file)) {
+          throw new Error('Domain already exists');
+        }
+        switch (domain) {
+          case 'github.com':
+            keygen(file);
+            spawnSync('gh', ['ssh-key', 'add', file, '-t', DEVICE]);
+            break;
+          case 'gitlab.com':
+            keygen(file);
+            spawnSync('glab', ['ssh-key', 'add', file, '-t', DEVICE]);
+            break;
+          default:
+            keygen(file);
+        }
+      })();
+      return;
+    }
+    await installFile('ssh/config', '~/.ssh/config')();
+  }));
+
 me.command('install zsh')
   .alias('i zsh')
   .action(script('install zsh', async () => {
@@ -283,6 +309,24 @@ me.command('install zsh')
   }));
 
 // ---
+
+function createLocalDirectory(to) {
+  return createDirectory(`${env.PWD}/${to}`);
+}
+
+function localFile(from, to) {
+  return async () => {
+    const file = await createLocalDirectory(to);
+    await copyFile(tilde(from), file);
+  };
+}
+
+function localLink(from, to) {
+  return async () => {
+    const file = await createLocalDirectory(to);
+    await symlink(tilde(from), file);
+  };
+}
 
 me.command('local editorconfig')
   .alias('l editorconfig')
