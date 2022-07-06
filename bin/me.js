@@ -166,6 +166,13 @@ me.command('export npm')
       .replace(/\n\n/, '\n'),
   )));
 
+me.command('export ssh')
+  .alias('e ssh')
+  .action(script('export ssh', exportFile(
+    '~/.ssh/config',
+    'ssh/config',
+  )));
+
 me.command('export vscode')
   .alias('e vscode')
   .action(script('export vscode', parallel(
