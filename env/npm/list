@@ -1,6 +1,5 @@
-@shower/cli@0.3.1
-npm@8.13.1
-peerflix@0.39.0
-pnpm@7.3.0
-yarn@1.22.19
-
+@shower/cli
+npm
+peerflix
+pnpm
+yarn

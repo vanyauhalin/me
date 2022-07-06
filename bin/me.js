@@ -156,7 +156,9 @@ me.command('export npm')
   .action(script('export npm', exportCli(
     'npm list --depth 0 --no-unicode -g',
     'npm/list',
-    (data) => data.replace(/.*\n/, '').replace(/[+`]-- /g, ''),
+    (data) => data.replace(/.*\n/, '')
+      .replace(/[+`]-- (.*)@.*/g, '$1')
+      .replace(/\n\n/, '\n'),
   )));
 
 me.command('export vscode')
