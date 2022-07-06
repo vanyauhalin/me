@@ -1,0 +1,2 @@
+GO111MODULE="on"
+GOPATH="/Users/vanyauhalin/.go"

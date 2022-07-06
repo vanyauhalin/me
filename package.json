@@ -25,6 +25,7 @@
     "html-minifier": "^4.0.0",
     "nunjucks": "^3.2.3",
     "puppeteer": "^15.3.0",
+    "sade": "^1.8.1",
     "stylelint": "^14.9.1"
   },
   "engines": {
