@@ -165,6 +165,7 @@ me.command('export vscode')
     script('export vscode/extensions', exportCli(
       'ls ~/.vscode/extensions',
       'vscode/extensions',
+      (data) => data.replace(/-[\d.]*$/gm, ''),
     )),
     script('export vscode/keybindings', exportFile(
       '~/Library/Application Support/Code/User/keybindings.json',
