@@ -15,8 +15,13 @@ import { fileURLToPath } from 'node:url';
 import { script } from '@vanyauhalin/nosock';
 import sade from 'sade';
 
+const HOMEDIR = homedir();
 const FILENAME = fileURLToPath(import.meta.url);
 const DIRNAME = dirname(resolve(`${FILENAME}/..`));
+
+function tilde(path) {
+  return path.replace('~', HOMEDIR);
+}
 
 function parallel(...actions) {
   return () => Promise.all(actions.map((action) => action()));
@@ -40,7 +45,7 @@ function exportCli(line, to, callback) {
   return async () => {
     const [command, ...arguments_] = line.split(' ');
     const process = spawnSync(command, arguments_.map((argument) => (
-      argument.replace('~', homedir())
+      tilde(argument)
     )));
     const error = process.stderr.toString();
     if (error) throw new Error(error);
@@ -54,25 +59,25 @@ function exportCli(line, to, callback) {
 function exportFile(from, to) {
   return async () => {
     const file = await createAppDirectory(to);
-    await copyFile(from.replace('~', homedir()), file);
+    await copyFile(tilde(from), file);
   };
 }
 
 function installFile(from, to) {
-  return () => copyFile(`${DIRNAME}/env/${from}`, to.replace('~', homedir()));
+  return () => copyFile(`${DIRNAME}/env/${from}`, tilde(to));
 }
 
 function localFile(from, to) {
   return async () => {
     const file = await createLocalDirectory(to);
-    await copyFile(from.replace('~', homedir()), file);
+    await copyFile(tilde(from), file);
   };
 }
 
 function localLink(from, to) {
   return async () => {
     const file = await createLocalDirectory(to);
-    await symlink(from.replace('~', homedir()), file);
+    await symlink(tilde(from), file);
   };
 }
 
