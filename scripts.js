@@ -198,8 +198,33 @@ const build = script('build', async () => {
         });
       })(),
     ]))(),
+    script('build/manifest', async () => {
+      const cv = await readFile('data/cv.json');
+      const cvJson = JSON.parse(cv.toString());
+      const pack = await readFile('package.json');
+      const packJson = JSON.parse(pack.toString());
+      const manifest = {
+        author: `${cvJson.basics.name} <${cvJson.basics.email}>`,
+        default_locale: 'en',
+        description: cvJson.basics.summary,
+        homepage_url: cvJson.basics.url,
+        icons: [
+          {
+            sizes: 'any',
+            src: '/favicon.svg',
+            type: 'image/svg+xml',
+          },
+        ],
+        manifest_version: 3,
+        name: `${cvJson.basics.name} | ${cvJson.basics.label}`,
+        version: packJson.version,
+      };
+      await writeFile(
+        'dist/manifest.json',
+        JSON.stringify(manifest, undefined, 2),
+      );
+    })(),
     script('copy/files', () => Promise.all([
-      copyFile('src/manifest.json', 'dist/manifest.json'),
       copyFile('src/CNAME', 'dist/CNAME'),
     ]))(),
   ]);
