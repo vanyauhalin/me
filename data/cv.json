@@ -48,6 +48,7 @@
     {
       "name": "OOO \"SK NEBO\"",
       "position": "Programmer",
+      "url": "https://sknebo.ru",
       "startDate": "2021-02-01",
       "endDate": "2021-07-01",
       "summary": "Integration of SPAs written in the Vue ecosystem (Vuex, Vue Route) into the CRM interface. Ant Design components were used to create the application interface and DevExtreme with Highcharts to illustrate the statistics. Along with application development, it was necessary to maintain and develop the company's business processes."
