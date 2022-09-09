@@ -1,11 +1,11 @@
 {
   "basics": {
     "name": "Ivan Uhalin",
-    "label": "Software Engineer",
+    "label": "Mobile Developer",
     "image": "https://vanyauhalin.me/vanyauhalin.png",
     "email": "vanyauhalin@gmail.com",
     "url": "https://vanyauhalin.me",
-    "summary": "The person from the world of science and technology. Programming is a huge part of me — I live by dreaming up ideas and making them as beautiful interfaces, taking care of the quality of my code.\nIn my free time, trying to be helpful to the open source community and become a little happier when my solutions, ideas help someone. I like the open source ideology and how it can bring people together to work on a common goal.\nOutside of programming, I listen to music, podcasts on the most unusual topics.",
+    "summary": "The person from the world of science and technology. Programming is a huge part of me — I live by dreaming up ideas, taking care of the quality of my code. I started my professional career as a Frontend Developer but after a few years I switched to Mobile Developer.\nIn my free time, I listen to music, listen to podcasts on the most unusual topics, explore and observe open source community, read articles on technical topics, watch films and much more.",
     "profiles": [
       {
         "network": "Telegram",
@@ -31,40 +31,40 @@
   },
   "work": [
     {
-      "name": "Open Source",
-      "position": "Software Engineer",
-      "url": "https://github.com/vanyauhalin",
-      "startDate": "2021-12-01",
-      "summary": "Writing own projects. Discussion in the community."
-    },
-    {
       "name": "Pochta Tech",
-      "position": "Frontend Engineer",
+      "position": "Frontend Developer",
       "url": "https://pochta.tech",
       "startDate": "2022-03-01",
       "endDate": "2022-06-01",
-      "summary": "Creating with a team an internal service on React, .NET to view messages in NATS streaming, co-mentoring."
+      "summary": "Development with a team of an internal service for company engineers to view system messages in NATS streaming. The backend team worked with .NET and NATS CLI, while the frontend team worked with React, React Router and the internal components library. Jira was used for task management and GitLab was used for source code management. At first, I spend more time communicating with the customer and PM, as well as co-mentoring the team."
     },
     {
       "name": "Freelance",
-      "position": "Frontend Engineer",
+      "position": "Frontend Developer",
       "startDate": "2022-01-01",
       "endDate": "2022-02-01",
-      "summary": "Refactoring company reporting the SPA written on React. Expanded functionality and transferred it from one application to another."
+      "summary": "Refactoring, merging two SPAs based on React, React Router, MUI, Mobx, Highcharts responsible for the creation of company reports."
     },
     {
       "name": "OOO \"SK NEBO\"",
       "position": "Programmer",
       "startDate": "2021-02-01",
       "endDate": "2021-07-01",
-      "summary": "Integrating the SPA's written on Vue into the CRM interface. Writing, supporting of business processes of the company."
+      "summary": "Integration of SPAs written in the Vue ecosystem (Vuex, Vue Route) into the CRM interface. Ant Design components were used to create the application interface and DevExtreme with Highcharts to illustrate the statistics. Along with application development, it was necessary to maintain and develop the company's business processes."
+    },
+    {
+      "name": "Freelance",
+      "position": "Frontend Developer",
+      "startDate": "2020-12-15",
+      "endDate": "2021-01-31",
+      "summary": "Development of an auto auction site for integration with a CRM using vanilla tools such as JavaScript, HTML, CSS using the BEM methodology."
     },
     {
       "name": "Self-employed",
       "position": "Programmer",
       "startDate": "2019-03-01",
       "endDate": "2020-05-01",
-      "summary": "First steps in programming, management. Writing a social network bot to sell food. Delivery management, promotion, design, etc."
+      "summary": "First steps in programming. It was necessary to write a social network bot to sell food in a closed area. As a result, the bot was written in JavaScript and hosted on Heroku as a NodeJS application. At the time, I had no idea how REST APIs and databases work, so I developed my bicycle: I used the service that parses Google Documents into JSON and allows me to access it as a REST API endpoint. In addition to programming, I had to deal with delivery management, promotion, design, etc."
     }
   ],
   "education": [
@@ -79,25 +79,31 @@
   ],
   "skills": [
     {
+      "name": "Mobile",
+      "level": "Junior",
+      "keywords": [
+        "Swift",
+        "SwiftUI"
+      ]
+    },
+    {
       "name": "Frontend",
       "level": "Middle",
       "keywords": [
         "TypeScript",
         "JavaScript",
-        "Web Components",
         "React",
         "Vue"
       ]
     },
     {
       "name": "Backend",
-      "level": "Middle",
+      "level": "Junior",
       "keywords": [
         "Node",
         "MongoDB",
         "Nginx",
-        "Docker",
-        "Go (early stage)"
+        "Docker"
       ]
     },
     {
