@@ -185,12 +185,37 @@ function installFile(from, to) {
   return () => copyFile(`${DIRNAME}/env/${from}`, tilde(to));
 }
 
+function createLocalDirectory(to) {
+  return createDirectory(`${env.PWD}/${to}`);
+}
+
+function localFile(from, to) {
+  return async () => {
+    const file = await createLocalDirectory(to);
+    await copyFile(tilde(from), file);
+  };
+}
+
+function localLink(from, to) {
+  return async () => {
+    const file = await createLocalDirectory(to);
+    await symlink(tilde(from), file);
+  };
+}
+
 me.command('install editorconfig')
   .alias('i editorconfig')
-  .action(script('install editorconfig', installFile(
-    'editorconfig/.editorconfig',
-    '~/.editorconfig',
-  )));
+  .option('-l, --local', 'Install locally')
+  .action(({ local }) => (local
+    ? script('install locally editorconfig', localFile(
+      '~/.editorconfig',
+      '.editorconfig',
+    ))
+    : script('install editorconfig', installFile(
+      'editorconfig/.editorconfig',
+      '~/.editorconfig',
+    ))
+  )());
 
 me.command('install git')
   .alias('i git')
@@ -291,31 +316,6 @@ me.command('install ssh [domain]')
   }));
 
 // ---
-
-function createLocalDirectory(to) {
-  return createDirectory(`${env.PWD}/${to}`);
-}
-
-function localFile(from, to) {
-  return async () => {
-    const file = await createLocalDirectory(to);
-    await copyFile(tilde(from), file);
-  };
-}
-
-function localLink(from, to) {
-  return async () => {
-    const file = await createLocalDirectory(to);
-    await symlink(tilde(from), file);
-  };
-}
-
-me.command('local editorconfig')
-  .alias('l editorconfig')
-  .action(script('local editorconfig', localFile(
-    '~/.editorconfig',
-    '.editorconfig',
-  )));
 
 me.command('local vscode')
   .alias('l vscode')
