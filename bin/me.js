@@ -166,13 +166,6 @@ me.command('export vscode')
     )),
   )));
 
-me.command('export zsh')
-  .alias('e zsh')
-  .action(script('export zsh', exportFile(
-    '~/.zshrc',
-    'zsh/.zshrc',
-  )));
-
 me.command('export all')
   .alias('e all')
   .action(async () => {
@@ -295,17 +288,6 @@ me.command('install ssh [domain]')
       return;
     }
     await installFile('ssh/config', '~/.ssh/config')();
-  }));
-
-me.command('install zsh')
-  .alias('i zsh')
-  .action(script('install zsh', async () => {
-    await installFile('zsh/.zshrc', '~/.zshrc')();
-    try {
-      execSync(`source ${homedir()}/.zshrc`);
-    } catch {
-      // This is fine.
-    }
   }));
 
 // ---
