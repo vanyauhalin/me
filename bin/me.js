@@ -315,14 +315,17 @@ me.command('install ssh [domain]')
     await installFile('ssh/config', '~/.ssh/config')();
   }));
 
-// ---
-
-me.command('local vscode')
-  .alias('l vscode')
-  .action(script('local vscode', localLink(
-    '~/.vscode/markdown.styles.css',
-    '.vscode/markdown.styles.css',
-  )));
+me.command('install vscode')
+  .alias('i vscode')
+  .option('-l, --local', 'Install locally')
+  .action(({ local }) => {
+    if (local) {
+      script('local vscode', localLink(
+        '~/.vscode/markdown.styles.css',
+        '.vscode/markdown.styles.css',
+      ))();
+    }
+  });
 
 // ---
 
