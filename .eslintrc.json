@@ -2,7 +2,7 @@
   "extends": "@vanyauhalin/eslint-config-base",
   "overrides": [
     {
-      "files": "bin/me.js",
+      "files": "cmd/bin/me.js",
       "rules": {
         "import/no-extraneous-dependencies": "off",
         "promise/prefer-await-to-callbacks": "off"
@@ -10,6 +10,6 @@
     }
   ],
   "ignorePatterns": [
-    "env/**"
+    "cmd/env/**"
   ]
 }

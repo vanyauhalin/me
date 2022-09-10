@@ -9,7 +9,7 @@
   "type": "module",
   "scripts": {
     "build": "nosock",
-    "lint": "eslint . && stylelint src/**/*.css",
+    "lint": "eslint . && stylelint site/src/**/*.css",
     "serve": "nosock"
   },
   "devDependencies": {

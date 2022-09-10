@@ -17,7 +17,7 @@ import sade from 'sade';
 
 const HOMEDIR = homedir();
 const FILENAME = fileURLToPath(import.meta.url);
-const DIRNAME = dirname(resolve(`${FILENAME}/..`));
+const DIRNAME = dirname(resolve(`${FILENAME}/../..`));
 const pack = await readFile(`${DIRNAME}/package.json`);
 const me = sade('me').version(JSON.parse(pack.toString()).version);
 
