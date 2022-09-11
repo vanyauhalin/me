@@ -72,9 +72,9 @@ const build = script('build', async () => {
   await mkdir('dist/assets');
   await Promise.all([
     script('build/components', async () => {
-      const components = await readdir('src/components');
+      const components = await readdir('site/src/components');
       await Promise.all(components.map(async (name) => {
-        const css = `src/components/${name}/${name}.css`;
+        const css = `site/src/components/${name}/${name}.css`;
         if (existsSync(css)) {
           const styles = await readFile(css);
           await writeFile(
@@ -84,7 +84,7 @@ const build = script('build', async () => {
         }
         await esbuild.build({
           allowOverwrite: true,
-          entryPoints: [`src/components/${name}/${name}.js`],
+          entryPoints: [`site/src/components/${name}/${name}.js`],
           minify: true,
           outfile: `dist/assets/${name}.js`,
         });
@@ -105,7 +105,7 @@ const build = script('build', async () => {
         description: 'Person from the world of science and technology',
         site: 'https://vanyauhalin.me',
       };
-      const engine = new Environment(new FileSystemLoader('src'));
+      const engine = new Environment(new FileSystemLoader('site/src'));
       const short = new Intl.DateTimeFormat('en-us', {
         month: 'short',
         year: 'numeric',
@@ -141,7 +141,7 @@ const build = script('build', async () => {
           await writePage('dist/index.html', page);
         })(),
         script('build/cv.njk', async () => {
-          const data = await readFile('data/cv.json');
+          const data = await readFile('site/data/cv.json');
           const page = engine.render('templates/page.njk', {
             ...meta,
             content: engine.render('pages/cv.njk', {
@@ -173,15 +173,15 @@ const build = script('build', async () => {
           server.close();
           await Promise.all([
             writeFile('dist/cv.pdf', pdf),
-            copyFile('data/cv.json', 'dist/cv.json'),
+            copyFile('site/data/cv.json', 'dist/cv.json'),
           ]);
         })(),
       ]);
     })(),
     script('build/styles', async () => {
-      const files = await readdir('src/styles');
+      const files = await readdir('site/src/styles');
       await Promise.all(files.map(async (file) => {
-        const styles = await readFile(`src/styles/${file}`);
+        const styles = await readFile(`site/src/styles/${file}`);
         await writeFile(
           `dist/assets/${file}`,
           csso.minify(styles.toString()).css,
@@ -189,9 +189,9 @@ const build = script('build', async () => {
       }));
     })(),
     script('build/images', () => Promise.all([
-      copyFile('data/vanyauhalin.png', 'dist/vanyauhalin.png'),
+      copyFile('site/data/vanyauhalin.png', 'dist/vanyauhalin.png'),
       script('build/favicon.svg', async () => {
-        const icon = await readFile('src/favicon.svg');
+        const icon = await readFile('site/src/favicon.svg');
         await writePage('dist/favicon.svg', icon.toString(), {
           collapseWhitespace: true,
           sortAttributes: true,
@@ -199,7 +199,7 @@ const build = script('build', async () => {
       })(),
     ]))(),
     script('build/manifest', async () => {
-      const cv = await readFile('data/cv.json');
+      const cv = await readFile('site/data/cv.json');
       const cvJson = JSON.parse(cv.toString());
       const pack = await readFile('package.json');
       const packJson = JSON.parse(pack.toString());
@@ -225,7 +225,7 @@ const build = script('build', async () => {
       );
     })(),
     script('copy/files', () => Promise.all([
-      copyFile('src/CNAME', 'dist/CNAME'),
+      copyFile('site/src/CNAME', 'dist/CNAME'),
     ]))(),
   ]);
   await script('build/hash', async () => {
