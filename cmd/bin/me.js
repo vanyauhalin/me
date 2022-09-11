@@ -1,3 +1,7 @@
+/**
+ * @typedef {import('@vanyauhalin/nosock/lib/scripter').Scripter} Scripter
+ */
+
 import { execSync, spawnSync } from 'node:child_process';
 import { existsSync } from 'node:fs';
 import {
@@ -15,20 +19,33 @@ import { fileURLToPath } from 'node:url';
 import { script } from '@vanyauhalin/nosock';
 import sade from 'sade';
 
-const HOMEDIR = homedir();
-const FILENAME = fileURLToPath(import.meta.url);
-const DIRNAME = dirname(resolve(`${FILENAME}/../..`));
-const pack = await readFile(`${DIRNAME}/package.json`);
+const HOME_DIRECTORY = homedir();
+const FILE_NAME = fileURLToPath(import.meta.url);
+const DIRECTORY_NAME = dirname(resolve(`${FILE_NAME}/../..`));
+const pack = await readFile(`${DIRECTORY_NAME}/package.json`);
 const me = sade('me').version(JSON.parse(pack.toString()).version);
 
+/**
+ * @param {string} path
+ * @returns {string}
+ */
 function tilde(path) {
-  return path.replace('~', HOMEDIR);
+  return path.replace(/^~\//, `${HOME_DIRECTORY}/`);
 }
 
-function parallel(...actions) {
-  return () => Promise.all(actions.map((action) => action()));
+/**
+ * @param {string} label
+ * @param {Parameters<Scripter>[1][]} actions
+ * @returns
+ */
+function parallelize(label, ...actions) {
+  return script(label, () => Promise.all(actions.map((action) => action())));
 }
 
+/**
+ * @param {string} file
+ * @returns {Promise<string>}
+ */
 async function createDirectory(file) {
   const directory = file.replace(new RegExp(`/${basename(file)}$`), '');
   if (!existsSync(directory)) await mkdir(directory, { recursive: true });
@@ -37,134 +54,159 @@ async function createDirectory(file) {
 
 // ---
 
-function createAppDirectory(to) {
-  return createDirectory(`${DIRNAME}/env/${to}`);
+/**
+ * @param {string} application
+ * @returns {Promise<string>}
+ */
+function createExportDirectory(application) {
+  return createDirectory(`${DIRECTORY_NAME}/cmd/env/${application}`);
 }
 
-function exportCli(line, to, callback) {
-  return async () => {
-    const [command, ...arguments_] = line.split(' ');
-    const process = spawnSync(command, arguments_.map((argument) => (
-      tilde(argument)
-    )));
-    const error = process.stderr.toString();
-    if (error) throw new Error(error);
-    let data = process.stdout.toString();
+/**
+ * @param {string} command
+ * @returns {string}
+ */
+function readFrom(command) {
+  const [bin, ...arguments_] = command.split(' ');
+  const process = spawnSync(bin, arguments_.map((argument) => tilde(argument)));
+  const error = process.stderr.toString();
+  if (error) throw new Error(error);
+  return process.stdout.toString();
+}
+
+/**
+ * @param {string} command
+ * @param {string} to
+ * @param {((data: string) => string)=} callback
+ * @returns {ReturnType<Scripter>}
+ */
+function exportizeFrom(command, to, callback) {
+  return script(`export ${to}`, async () => {
+    let data = readFrom(command);
     if (callback) data = callback(data);
-    const file = await createAppDirectory(to);
+    const file = await createExportDirectory(to);
     await writeFile(file, data);
-  };
+  });
 }
 
-function exportFile(from, to) {
-  return async () => {
-    const file = await createAppDirectory(to);
+/**
+ * @param {string} from
+ * @param {string} to
+ * @returns {ReturnType<Scripter>}
+ */
+function exportize(from, to) {
+  return script(`export ${to}`, async () => {
+    const file = await createExportDirectory(to);
     await copyFile(tilde(from), file);
-  };
+  });
 }
 
 me.command('export act')
   .alias('e act')
-  .action(script('export act', exportFile(
+  .action(exportize(
     '~/.actrc',
     'act/.actrc',
-  )));
+  ));
 
 me.command('export brew')
   .alias('e brew')
-  .action(script('export brew', parallel(
-    script('export brew/cask', exportCli(
+  .action(parallelize(
+    'export brew',
+    exportizeFrom(
       'brew list --cask',
       'brew/cask',
-    )),
-    script('export brew/formulae', exportCli(
+    ),
+    exportizeFrom(
       'brew leaves',
       'brew/formulae',
-    )),
-  )));
+    ),
+  ));
 
 me.command('export editorconfig')
   .alias('e editorconfig')
-  .action(script('export editorconfig', exportFile(
+  .action(exportize(
     '~/.editorconfig',
     'editorconfig/.editorconfig',
-  )));
+  ));
 
 me.command('export fnm')
   .alias('e fnm')
-  .action(script('export fnm', exportCli(
+  .action(exportizeFrom(
     'fnm env',
     'fnm/env',
     (data) => `${data.match(/FNM_DIR.*/)[0]}`,
-  )));
+  ));
 
 me.command('export git')
   .alias('e git')
-  .action(script('export git', parallel(
-    script('export git/.gitconfig', exportFile(
+  .action(parallelize(
+    'export git',
+    exportize(
       '~/.gitconfig',
       'git/.gitconfig',
-    )),
-    script('export git/.gitignore', exportFile(
+    ),
+    exportize(
       '~/.gitignore',
       'git/.gitignore',
-    )),
-  )));
+    ),
+  ));
 
 me.command('export go')
   .alias('e go')
-  .action(script('export go', parallel(
-    script('export go/bin', exportCli(
+  .action(parallelize(
+    'export go',
+    exportizeFrom(
       'ls -1 ~/.go/bin',
       'go/bin',
-    )),
-    script('export go/env', exportCli(
+    ),
+    exportizeFrom(
       'go env',
       'go/env',
       (data) => (
         `${data.match(/GO111MODULE.*/)[0]}\n${data.match(/GOPATH.*/)[0]}`
       ),
-    )),
-  )));
+    ),
+  ));
 
 me.command('export npm')
   .alias('e npm')
-  .action(script('export npm', exportCli(
+  .action(exportizeFrom(
     'npm list --depth 0 --no-unicode -g',
     'npm/list',
     (data) => data.replace(/.*\n/, '')
       .replace(/[+`]-- (.*)@.*/g, '$1')
       .replace(/\n\n/, '\n'),
-  )));
+  ));
 
 me.command('export ssh')
   .alias('e ssh')
-  .action(script('export ssh', exportFile(
+  .action(exportize(
     '~/.ssh/config',
     'ssh/config',
-  )));
+  ));
 
 me.command('export vscode')
   .alias('e vscode')
-  .action(script('export vscode', parallel(
-    script('export vscode/extensions', exportCli(
+  .action(parallelize(
+    'export vscode',
+    exportizeFrom(
       'ls ~/.vscode/extensions',
       'vscode/extensions',
       (data) => data.replace(/-[\d.]*$/gm, ''),
-    )),
-    script('export vscode/keybindings', exportFile(
+    ),
+    exportize(
       '~/Library/Application Support/Code/User/keybindings.json',
       'vscode/keybindings.json',
-    )),
-    script('export vscode/styles', exportFile(
+    ),
+    exportize(
       '~/.vscode/markdown.styles.css',
       'vscode/markdown.styles.css',
-    )),
-    script('export vscode/settings', exportFile(
+    ),
+    exportize(
       '~/Library/Application Support/Code/User/settings.json',
       'vscode/settings.json',
-    )),
-  )));
+    ),
+  ));
 
 me.command('export all')
   .alias('e all')
@@ -182,7 +224,7 @@ me.command('export all')
 // ---
 
 function installFile(from, to) {
-  return () => copyFile(`${DIRNAME}/env/${from}`, tilde(to));
+  return () => copyFile(`${DIRECTORY_NAME}/env/${from}`, tilde(to));
 }
 
 function createLocalDirectory(to) {
@@ -219,7 +261,8 @@ me.command('install editorconfig')
 
 me.command('install git')
   .alias('i git')
-  .action(script('install git', parallel(
+  .action(parallelize(
+    'install git',
     script('install git/.gitconfig', installFile(
       'git/.gitconfig',
       '~/.gitconfig',
@@ -228,7 +271,7 @@ me.command('install git')
       'git/.gitignore',
       '~/.gitignore',
     )),
-  )));
+  ));
 
 function checkSpawn(callback) {
   const process = callback();
@@ -251,7 +294,7 @@ me.command('install icons')
       if (apps.includes(name)) return findApp(name, `${directory}/${name}`);
       throw new Error(`${name} not found`);
     }
-    const sources = `${DIRNAME}/resources/icons`;
+    const sources = `${DIRECTORY_NAME}/resources/icons`;
     const icons = await readdir(sources);
     const temporary = `${tmpdir()}/icons`;
     if (!existsSync(temporary)) await mkdir(temporary);
