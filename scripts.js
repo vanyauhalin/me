@@ -141,17 +141,18 @@ const build = script('build', async () => {
           await writePage('dist/index.html', page);
         })(),
         script('build/cv.njk', async () => {
-          const data = await readFile('site/data/cv.json');
+          const cv = await readFile('site/data/cv.json');
+          const cvJson = JSON.parse(cv.toString());
           const page = engine.render('templates/page.njk', {
             ...meta,
             content: engine.render('pages/cv.njk', {
               updated,
-              data: JSON.parse(data.toString()),
+              data: cvJson,
               heading: meta.heading,
               url: `${meta.site}/cv`,
             }),
-            description: `Software Engineer. ${meta.description}`,
-            title: `${meta.heading} | Software Engineer`,
+            description: `${cvJson.basics.label}. ${meta.description}`,
+            title: `${meta.heading} | ${cvJson.basics.label}`,
             url: `${meta.site}/cv`,
           });
           if (!existsSync('dist/cv')) await mkdir('dist/cv');
