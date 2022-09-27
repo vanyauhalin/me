@@ -124,12 +124,5 @@
       "language": "Russian",
       "fluency": "Native speaker"
     }
-  ],
-  "projects": [
-    {
-      "name": "nosock",
-      "description": "Tiny NodeJS scripts runner.",
-      "url": "https://github.com/vanyauhalin/nosock"
-    }
   ]
 }
