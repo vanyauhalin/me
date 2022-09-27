@@ -1,11 +1,11 @@
 {
   "basics": {
     "name": "Ivan Uhalin",
-    "label": "Mobile Developer",
+    "label": "iOS Developer",
     "image": "https://vanyauhalin.me/vanyauhalin.png",
     "email": "vanyauhalin@gmail.com",
     "url": "https://vanyauhalin.me",
-    "summary": "The person from the world of science and technology. Programming is a huge part of me — I go to bed thinking: \"I wish I could wake up as soon as possible so I can get back to programming\". I started my professional career as a Frontend Developer but after a few years I switched to Mobile Developer.\nIn my free time, I listen to music, listen to podcasts on the most unusual topics, explore and observe open source community, read articles on technical topics, watch films and much more.",
+    "summary": "The person from the world of science and technology. Programming is a huge part of me — I go to bed thinking: \"I wish I could wake up as soon as possible so I can get back to programming\". I started my professional career as a Frontend Developer but after a few years I switched to iOS Developer.\nIn my free time, I listen to music, listen to podcasts on the most unusual topics, explore and observe open source community, read articles on technical topics, watch films and much more.",
     "profiles": [
       {
         "network": "Telegram",
@@ -59,13 +59,6 @@
       "startDate": "2020-12-15",
       "endDate": "2021-01-31",
       "summary": "Development of an auto auction site for integration with a CRM using vanilla tools such as JavaScript, HTML, CSS using the BEM methodology."
-    },
-    {
-      "name": "Self-employed",
-      "position": "Programmer",
-      "startDate": "2019-03-01",
-      "endDate": "2020-05-01",
-      "summary": "First steps in programming. It was necessary to write a social network bot to sell food in a closed area. As a result, the bot was written in JavaScript and hosted on Heroku as a NodeJS application. At the time, I had no idea how REST APIs and databases work, so I developed my bicycle: I used the service that parses Google Documents into JSON and allows me to access it as a REST API endpoint. In addition to programming, I had to deal with delivery management, promotion, design, etc."
     }
   ],
   "education": [
@@ -123,13 +116,6 @@
     {
       "language": "Russian",
       "fluency": "Native speaker"
-    }
-  ],
-  "projects": [
-    {
-      "name": "nosock",
-      "description": "Tiny NodeJS scripts runner.",
-      "url": "https://github.com/vanyauhalin/nosock"
     }
   ]
 }

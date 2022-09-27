@@ -45,6 +45,7 @@
   {% endfor %}
   {% include "templates/cv-experience.njk" %}
 
+  {% if data.projects %}
   {% set experienceHeading = "Projects" %}
   {% set experienceList = [] %}
   {% for project in data.projects %}
@@ -55,6 +56,7 @@
     }), experienceList) %}
   {% endfor %}
   {% include "templates/cv-experience.njk" %}
+  {% endif %}
 
   {% set skillsHeading = "Stacks" %}
   {% set skillsHead = ["Area", "Instruments"] %}
