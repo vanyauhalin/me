@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html class="page" lang="en">
   <head>
     <meta charset="utf-8">
     <meta
@@ -16,10 +16,6 @@
     <meta
       content="{{ description }}"
       name="description"
-    >
-    <link
-      href="/manifest.json"
-      rel="manifest"
     >
     <link
       href="/favicon.svg"
@@ -59,38 +55,12 @@
       content="{{ url }}"
       name="twitter:site"
     >
-    <meta
-      content="light dark"
-      name="color-scheme"
-    >
-    <meta
-      content="#ffffff"
-      media="(prefers-color-scheme: light)"
-      name="theme-color"
-    >
-    <meta
-      content="#0d1117"
-      media="(prefers-color-scheme: dark)"
-      name="theme-color"
-    >
     <link
       rel="stylesheet"
       href="/assets/main.css"
     >
-    <link
-      rel="stylesheet"
-      href="/assets/light.css"
-      media="(prefers-color-scheme: light)"
-    >
-    <link
-      rel="stylesheet"
-      href="/assets/dark.css"
-      media="(prefers-color-scheme: dark)"
-    >
   </head>
-  <body>
+  <body class="page__body">
     {{ content | safe }}
-    {% include "components/scheme-switch/scheme-switch.njk" %}
-    <script src="/assets/scheme-switch.js"></script>
   </body>
 </html>

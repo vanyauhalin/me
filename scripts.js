@@ -13,7 +13,6 @@ import { createServer } from 'node:http';
 import { extname } from 'node:path';
 import { log, script } from '@vanyauhalin/nosock';
 import * as csso from 'csso';
-import esbuild from 'esbuild';
 import html from 'html-minifier';
 import { Environment, FileSystemLoader } from 'nunjucks';
 import puppeteer from 'puppeteer';
@@ -71,25 +70,6 @@ const build = script('build', async () => {
   await mkdir('dist');
   await mkdir('dist/assets');
   await Promise.all([
-    script('build/components', async () => {
-      const components = await readdir('site/src/components');
-      await Promise.all(components.map(async (name) => {
-        const css = `site/src/components/${name}/${name}.css`;
-        if (existsSync(css)) {
-          const styles = await readFile(css);
-          await writeFile(
-            `dist/assets/${name}.css`,
-            csso.minify(styles.toString()).css,
-          );
-        }
-        await esbuild.build({
-          allowOverwrite: true,
-          entryPoints: [`site/src/components/${name}/${name}.js`],
-          minify: true,
-          outfile: `dist/assets/${name}.js`,
-        });
-      }));
-    })(),
     script('build/pages', async () => {
       const updated = (new Intl.DateTimeFormat('en-us', {
         day: 'numeric',
@@ -112,34 +92,6 @@ const build = script('build', async () => {
       });
       engine.addFilter('shortDate', (value) => short.format(new Date(value)));
       await Promise.all([
-        script('build/404.njk', async () => {
-          const page = engine.render('templates/page.njk', {
-            ...meta,
-            content: engine.render('pages/404.njk', {
-              updated,
-              heading: meta.heading,
-              site: meta.site,
-              url: `${meta.site}/404.html`,
-            }),
-            title: `${meta.heading} | 404`,
-            url: `${meta.site}/404.html`,
-          });
-          await writePage('dist/404.html', page);
-        })(),
-        script('build/index.njk', async () => {
-          const page = engine.render('templates/page.njk', {
-            ...meta,
-            content: engine.render('pages/index.njk', {
-              updated,
-              heading: meta.heading,
-              site: meta.site,
-              url: `${meta.site}/`,
-            }),
-            title: meta.heading,
-            url: `${meta.site}/`,
-          });
-          await writePage('dist/index.html', page);
-        })(),
         script('build/cv.njk', async () => {
           const cv = await readFile('site/data/cv.json');
           const cvJson = JSON.parse(cv.toString());
@@ -157,6 +109,8 @@ const build = script('build', async () => {
           });
           if (!existsSync('dist/cv')) await mkdir('dist/cv');
           await writePage('dist/cv/index.html', page);
+          await writePage('dist/index.html', page);
+          await writePage('dist/404.html', page);
           server.listen(3000);
           const browser = await puppeteer.launch();
           const browserPage = await browser.newPage();
@@ -165,8 +119,8 @@ const build = script('build', async () => {
             displayHeaderFooter: false,
             format: 'A4',
             margin: {
-              top: '0.4in',
-              bottom: '0.4in',
+              top: '0',
+              bottom: '0',
             },
             printBackground: true,
           });
@@ -174,7 +128,6 @@ const build = script('build', async () => {
           server.close();
           await Promise.all([
             writeFile('dist/cv.pdf', pdf),
-            copyFile('site/data/cv.json', 'dist/cv.json'),
           ]);
         })(),
       ]);
@@ -190,7 +143,7 @@ const build = script('build', async () => {
       }));
     })(),
     script('build/images', () => Promise.all([
-      copyFile('site/data/vanyauhalin.png', 'dist/vanyauhalin.png'),
+      copyFile('site/data/profile-picture.png', 'dist/profile-picture.png'),
       script('build/favicon.svg', async () => {
         const icon = await readFile('site/src/favicon.svg');
         await writePage('dist/favicon.svg', icon.toString(), {
@@ -199,33 +152,16 @@ const build = script('build', async () => {
         });
       })(),
     ]))(),
-    script('build/manifest', async () => {
-      const cv = await readFile('site/data/cv.json');
-      const cvJson = JSON.parse(cv.toString());
-      const pack = await readFile('package.json');
-      const packJson = JSON.parse(pack.toString());
-      const manifest = {
-        author: `${cvJson.basics.name} <${cvJson.basics.email}>`,
-        default_locale: 'en',
-        description: cvJson.basics.summary,
-        homepage_url: cvJson.basics.url,
-        icons: [
-          {
-            sizes: 'any',
-            src: '/favicon.svg',
-            type: 'image/svg+xml',
-          },
-        ],
-        manifest_version: 3,
-        name: `${cvJson.basics.name} | ${cvJson.basics.label}`,
-        version: packJson.version,
-      };
-      await writeFile(
-        'dist/manifest.json',
-        JSON.stringify(manifest, undefined, 2),
-      );
-    })(),
     script('copy/files', () => Promise.all([
+      copyFile('site/src/CNAME', 'dist/CNAME'),
+      copyFile(
+        'site/src/fonts/SourceCodePro-Medium.woff2',
+        'dist/assets/SourceCodePro-Medium.woff2',
+      ),
+      copyFile(
+        'site/src/fonts/SourceCodePro-Regular.woff2',
+        'dist/assets/SourceCodePro-Regular.woff2',
+      ),
       copyFile('site/src/CNAME', 'dist/CNAME'),
     ]))(),
   ]);
@@ -234,7 +170,6 @@ const build = script('build', async () => {
     const hashable = [
       ...assets.map((file) => `dist/assets/${file}`),
       'dist/favicon.svg',
-      'dist/manifest.json',
     ];
     const hashed = await Promise.all(hashable.map(async (file) => {
       const raw = await readFile(file);

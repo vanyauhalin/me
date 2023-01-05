@@ -1,131 +1,366 @@
-<header>
-  <section>
-    <h1>
-      {{ heading }}
-    </h1>
-    <p>
-      {{ data.basics.label }}
-    </p>
-    <a href="mailto:{{ data.basics.email }}">
-      {{ data.basics.email }}
-    </a>
-    <div>
-      {% for profile in data.basics.profiles %}
-        <a href="{{ profile.url }}">
-          {{ profile.network -}}
-        </a>
-        {{- ", " if not loop.last }}
-      {% endfor %}
-    </div>
-    {% set separatorLength = 41 %}
-    {% include "templates/separator.njk" %}
-  </section>
-  <scheme-switch></scheme-switch>
+<header class="header">
+  <h1 class="header__heading">
+    <span class="phrase">
+      I am
+    </span>
+    <span class="phrase shape shape_first">
+      Ivan Uhalin
+    </span>
+    <span class="phrase shape shape_second">
+      iOS Developer
+    </span>
+  </h1>
 </header>
-<main>
-  <section>
+
+<main class="main">
+  <section class="section">
     <h2 class="sr-only">
-      ## Summary
+      Summary
     </h2>
-    <p>
-      {{ data.basics.summary | replace("\n", "</p><p>") | safe }}
+    <p class="paragraph">
+      I started as a Frontend Developer but after a few years, I switched to iOS Developer, wanting to develop applications using native tools. I like to develop in the open, use micro-architectures, and maintain high code requirements. Music or podcasts are constantly playing in my headphones, but not about that now.
+    </p>
+    <p class="paragraph">
+      I am always in touch via
+      <a
+        class="link phrase"
+        href="https://t.me/vanyauhalin"
+      >
+        {{ "Telegram (@vanyauhalin)" -}}
+      </a>
+      or
+      <a
+        class="link phrase"
+        href="mailto:vanyauhalin@gmail.com"
+      >
+        {{ "Email (vanyauhalin@gmail.com)" -}}
+      </a>
+      {{- ", " }}
+      publish my work on
+      <a
+        class="link phrase"
+        href="https://github.com/vanyauhalin"
+      >
+        {{ "GitHub (@vanyauhalin)" -}}
+      </a>
+      {{- ", " }}
+      look for a job via
+      <a
+        class="link phrase"
+        href="https://www.linkedin.com/in/vanyauhalin"
+      >
+        {{ "LinkedIn (@vanyauhalin)" -}}
+      </a>
+      {{- ", " }}
+      and host this CV on my
+      <a
+        class="link phrase"
+        href="https://vanyauhalin.me"
+      >
+        {{ "Personal Website (vanyauhalin.me)" -}}
+      </a>
+      {{- ". " }}
     </p>
   </section>
-  {% set experienceHeading = "Work Experience" %}
-  {% set experienceList = [] %}
-  {% for work in data.work %}
-    {% set experienceList = (experienceList.push({
-      description: work.summary,
-      end: work.endDate,
-      start: work.startDate,
-      subtitle: work.position,
-      title: work.name,
-      url: work.url
-    }), experienceList) %}
-  {% endfor %}
-  {% include "templates/cv-experience.njk" %}
 
-  {% if data.projects %}
-  {% set experienceHeading = "Projects" %}
-  {% set experienceList = [] %}
-  {% for project in data.projects %}
-    {% set experienceList = (experienceList.push({
-      description: project.description,
-      title: project.name,
-      url: project.url
-    }), experienceList) %}
-  {% endfor %}
-  {% include "templates/cv-experience.njk" %}
-  {% endif %}
+  <section class="section">
+    <h2 class="section__heading">
+      Work Experience
+    </h2>
+    <ul class="section__list">
+      <li class="section__item">
+        <p class="paragraph">
+          <a
+            class="link phrase"
+            href="https://pochta.tech"
+          >
+            {{ "Pochta Tech" -}}
+          </a>
+          {{- ", " }}
+          Frontend Developer
+          <br>
+          {{ "2022-03-01" | shortDate }}
+          –
+          {{ "2022-06-01" | shortDate }}
+        </p>
+        <p class="paragraph">
+          Together with the
+          <span class="shape shape_soft">
+            {{- "team" -}}
+          </span>
+          {{- "," }}
+          we
+          <span class="shape shape_verb">
+            {{- "developed" -}}
+          </span>
+          an internal web application for engineers to view system messages in streaming. Worked with
+          <span class="shape shape_hard">
+            {{- "TypeScript" -}}
+          </span>
+          and
+          <span class="shape shape_hard">
+            {{- "React" -}}
+          </span>
+          to build UI, used
+          <span class="shape shape_hard">
+            {{- "GitLab" -}}
+          </span>
+          {{- ", " }}
+          <span class="shape shape_hard">
+            {{- "Jira" -}}
+          </span>
+          {{- ", " }}
+          and
+          <span class="shape shape_hard">
+            {{- "Scrum" -}}
+          </span>
+          methodology to organize processes. At first, I spend more time
+          <span class="shape shape_soft">
+            {{- "communicating" -}}
+          </span>
+          with the
+          <span class="shape shape_soft">
+            {{- "customer" -}}
+          </span>
+          and
+          <span class="shape shape_soft">
+            {{- "PM" -}}
+          </span>
+          {{ ", " }}
+          as well as
+          <span class="shape shape_soft">
+            {{- "co-mentoring" -}}
+          </span>
+          the team. Was forced to leave the company due to sudden emigration.
+        </p>
+      </li>
 
-  {% set skillsHeading = "Stacks" %}
-  {% set skillsHead = ["Area", "Instruments"] %}
-  {% set skillsBody = [] %}
-  {% for skill in data.skills %}
-    {% set keywords %}
-      {{ skill.keywords | join(", ") }}
-    {% endset %}
-    {% set skillsBody = (
-      skillsBody.push([skill.name, keywords]),
-      skillsBody
-    ) %}
-  {% endfor %}
-  {% include "templates/cv-skills.njk" %}
+      <li class="section__item">
+        <p class="paragraph">
+          <a
+            class="link phrase"
+            href="https://sknebo.ru"
+          >
+            {{ "OOO \"SK NEBO\"" -}}
+          </a>
+          {{- ", " }}
+          Programmer
+          <br>
+          {{ "2021-02-01" | shortDate }}
+          –
+          {{ "2021-07-01" | shortDate }}
+        </p>
+        <p class="paragraph">
+          <span class="shape shape_soft">
+            {{ "Single-handedly" -}}
+          </span>
+          <span class="shape shape_verb">
+            {{- "developed" -}}
+          </span>
+          applications with
+          <span class="shape shape_hard">
+            {{- "JavaScript" -}}
+          </span>
+          and
+          <span class="shape shape_hard">
+            {{- "Vue" -}}
+          </span>
+          to automate company reporting and
+          <span class="shape shape_verb">
+            {{- "integrated" -}}
+          </span>
+          them into CRM.
+          <span class="shape shape_verb">
+            {{- "Maintained" -}}
+          </span>
+          the company's business processes related to sales. Left the company to go deeper into fronted development.
+        </p>
+      </li>
 
-  {% set experienceHeading = "Education" %}
-  {% set experienceList = [] %}
-  {% for item in data.education %}
-    {% set subtitle %}
-      {{ item.studyType }}, {{ item.area }}
-    {% endset %}
-    {% set experienceList = (experienceList.push({
-      end: item.endDate,
-      start: item.startDate,
-      subtitle: subtitle,
-      title: item.institution,
-      url: item.url
-    }), experienceList) %}
-  {% endfor %}
-  {% include "templates/cv-experience.njk" %}
+      <li class="section__item">
+        <p class="paragraph">
+          Freelance, Frontend Developer
+          <br>
+          {{ "2022-01-01" | shortDate }}
+          –
+          {{ "2022-02-01" | shortDate }}
+          {{- ", " }}
+          {{ "2020-12-15" | shortDate }}
+          –
+          {{ "2021-01-31" | shortDate }}
+        </p>
+        <p class="paragraph">
+          <span class="shape shape_verb">
+            {{ "Refactored" -}}
+          </span>
+          two applications written with
+          <span class="shape shape_hard">
+            {{- "TypeScript" -}}
+          </span>
+          and
+          <span class="shape shape_hard">
+            {{- "React" -}}
+          </span>
+          to automate company reporting and
+          <span class="shape shape_verb">
+            {{- "merged" -}}
+          </span>
+          them into one.
+          <br>
+          <span class="shape shape_verb">
+            {{ "Developed" -}}
+          </span>
+          the auto auction website for integration with CRM using vanilla tools such as
+          <span class="shape shape_hard">
+            {{- "JavaScript" -}}
+          </span>
+          {{- ", " }}
+          <span class="shape shape_hard">
+            {{- "HTML" -}}
+          </span>
+          {{- ", " }}
+          and
+          <span class="shape shape_hard">
+            {{- "CSS" -}}
+          </span>
+          {{- "." }}
+        </p>
+      </li>
+    </ul>
+  </section>
 
-  {% set skillsHeading = "Languages" %}
-  {% set skillsHead = ["Language", "Fluency"] %}
-  {% set skillsBody = [] %}
-  {% for lang in data.languages %}
-    {% set skillsBody = (
-      skillsBody.push([lang.language, lang.fluency]),
-      skillsBody
-    ) %}
-  {% endfor %}
-  {% include "templates/cv-skills.njk" %}
+  <section class="section">
+    <h2 class="section__heading">
+      Projects
+    </h2>
+    <ul class="section__list">
+      <li class="section__item">
+        <p class="paragraph">
+          <a
+            class="link phrase"
+            href="https://github.com/vanyauhalin/RoutineJournal"
+          >
+            RoutineJournal
+          </a>
+          <br>
+          The daily routine management application for iOS.
+        </p>
+      </li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2 class="section__heading">
+      Skills
+    </h2>
+    <p class="paragraph">
+      <span class="shape shape_hard">
+        {{- "Swift" -}}
+      </span>
+      {{- ", " }}
+      <span class="shape shape_hard">
+        {{- "SwiftUI" -}}
+      </span>
+      {{- ", " }}
+      <span class="shape shape_hard">
+        {{- "Realm" -}}
+      </span>
+      {{- ", " }}
+      <span class="shape shape_hard">
+        {{- "MongoDB" -}}
+      </span>
+      {{- ", " }}
+      <span class="shape shape_hard">
+        {{- "Docker" -}}
+      </span>
+      {{- ", " }}
+      <span class="shape shape_hard">
+        {{- "GitHub Actions" -}}
+      </span>
+      {{- ", " }}
+      <span class="shape shape_hard">
+        {{- "Node" -}}
+      </span>
+      and many others... I like to learn new technologies, expanding my knowledge.
+    </p>
+  </section>
+
+  <section class="section">
+    <h2 class="section__heading">
+      Education
+    </h2>
+    <ul class="section__list">
+      <li class="section__item">
+        <p class="paragraph">
+          <a
+            class="link phrase"
+            href="https://rosnou.ru"
+          >
+            {{ "Russian New University" -}}
+          </a>
+          {{- ", " }}
+          Bachelor, Applied Computer Science
+          <br>
+          {{ "2018-09-01" | shortDate }}
+          –
+          {{ "2022-07-01" | shortDate }}
+        </p>
+        <p class="paragraph">
+          Conceptual, functional, and logical system design. Analysis of problem situations and development of business requirements.
+        </p>
+      </li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2 class="section__heading">
+      Languages
+    </h2>
+    <p class="paragraph">
+      My level of
+      <span class="shape shape_soft">
+        {{- "English" -}}
+      </span>
+      is enough for comfortable communication. In turn,
+      <span class="shape shape_soft">
+        {{- "Russian" -}}
+      </span>
+      is my native language.
+    </p>
+  </section>
 </main>
-<footer>
-  <span class="print-only">
-    <a
-      href="{{ url }}"
-      target="_blank"
-    >
-      {{ "Online Version" -}}
-    </a>
-    {{- "," }}
-  </span>
-  <span class="no-print">
-    <a
-      href="{{ url }}.pdf"
-      target="_blank"
-    >
-      {{ "PDF Version" -}}
-    </a>
-    {{- "," }}
-  </span>
-  <span>
-    <a
-      href="{{ url }}.json"
-      target="_blank"
-    >
-      {{ "JSON Version" -}}
-    </a>
-    {{- "." }}
-  </span>
-  {% include "templates/updated.njk" %}
+<footer class="footer">
+  <p class="paragraph">
+    <span class="print-only">
+      <a
+        class="link phrase"
+        href="https://vanyauhalin.me/cv"
+        target="_blank"
+      >
+        {{ "Online Version" -}}
+      </a>
+      {{- ", " }}
+    </span>
+    <span class="no-print">
+      <a
+        class="lin phrasek"
+        href="https://vanyauhalin.me/cv.pdf"
+        target="_blank"
+      >
+        {{ "PDF Version" -}}
+      </a>
+      {{- ", " }}
+    </span>
+    <span>
+      <a
+        class="link phrase"
+        href="https://vanyauhalin.me/profile-picture.png"
+        target="_blank"
+      >
+        {{ "Profile Picture" -}}
+      </a>
+      {{- ". " }}
+    </span>
+    Last updated at {{ updated }} UTC.
+  </p>
 </footer>
