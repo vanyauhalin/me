@@ -8,12 +8,6 @@
   line-height: var(--line-height);
 }
 
-@media not print {
-  .page {
-    font-size: 20px;
-  }
-}
-
 .page__body {
   margin: 0;
 }
