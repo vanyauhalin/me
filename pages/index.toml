@@ -1,0 +1,6 @@
+title = "Ivan Uhalin"
+description = """
+Welcome to Ivan Uhalin's site where he talks about programming and more
+"""
+layout = "page.njk"
+permalink = "index.html"

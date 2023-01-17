@@ -1,0 +1,4 @@
+title = "Non-existent Page · Ivan Uhalin"
+description = "Seems like we are lost and ended up on a non-existent page."
+layout = "page.njk"
+permalink = "404/index.html"
