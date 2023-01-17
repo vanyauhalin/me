@@ -1,6 +1,0 @@
-{
-  "extends": "@vanyauhalin/stylelint-config-base",
-  "ignoreFiles": [
-    "cmd/env/**"
-  ]
-}
