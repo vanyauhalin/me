@@ -1,3 +1,4 @@
+noindex = true
 title = "Ivan Uhalin for Laoshi · iOS Developer"
 description = "iOS developer who loves what he does"
 layout = "page.njk"

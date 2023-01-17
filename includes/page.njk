@@ -62,6 +62,13 @@
       {{ title }}
     </title>
 
+    {% if noindex %}
+      <meta
+        name="robots"
+        content="noindex"
+      >
+    {% endif %}
+
     <meta
       name="author"
       content="Ivan Uhalin <vanyauhalin@gmail.com>"
