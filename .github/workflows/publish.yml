@@ -1,0 +1,44 @@
+name: publish
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          registry-url: "https://npm.pkg.github.com"
+          scope: "@vanyauhalin"
+      - name: Install dependencies
+        run: |
+          npm i -g pnpm
+          pnpm i --frozen-lockfile
+      - name: Build site
+        run: |
+          pnpm build
+          pnpm build-hash
+          pnpm build-pdf
+      - name: Setup git configuration
+        run: |
+          raw="https://api.github.com/users/${{ github.actor }}"
+          json=$(curl --silent -H 'Accept: application/json' $raw)
+          id=$(echo $json | jq --raw-output '.id')
+          git config --global user.name ${{ github.actor }}
+          git config --global user.email \
+            "$id+${{ github.actor }}@users.noreply.github.com"
+      - name: Publish site
+        run: |
+          temp=$(mktemp -d)
+          cd .build
+          git clone \
+            --quiet \
+            --no-checkout \
+            --single-branch \
+            --branch "gh-pages" \
+            https://${{ secrets.RELEASE_TOKEN }}@github.com/${{ github.repository }}.git \
+            temp
+          mv temp/.git .
+          git add .
+          git commit --quiet --message "$(date -u)"
+          git push
