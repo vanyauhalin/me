@@ -6,6 +6,7 @@ const fs = require("node:fs/promises")
 const path = require("node:path")
 const process = require("node:process")
 const stream = require("node:stream")
+const timers = require("node:timers/promises")
 const url = require("node:url")
 const toml = require("@iarna/toml")
 const htmlMinifier = require("html-minifier-terser")
@@ -239,14 +240,18 @@ module.exports.hash = () => {
   })
 }
 
+function delay() {
+  return new Promise((resolve) => {
+    setTimeout
+  })
+}
+
 module.exports.pdf = () => {
   const serve = childProcess
     .spawn("node", [
       "node_modules/@11ty/eleventy/cmd.js",
       "--serve",
-      "--dryrun",
-      "--port",
-      "3000"
+      "--dryrun"
     ])
     .on("error", (error) => {
       console.error(error)
@@ -259,11 +264,12 @@ module.exports.pdf = () => {
     .launch()
     .then(async (browser) => {
       const targets = await find(".build/cv", ".html")
+      await timers.setTimeout(30000)
       await Promise.all(targets.map(async (target) => {
         const slug = target
           .replace(".build", "")
           .replace("/index.html", "")
-        const url2 = new url.URL(slug, "http://localhost:3000")
+        const url2 = new url.URL(slug, "http://localhost:8080")
         const page = await browser.newPage()
         await page.goto(url2.href, {
           waitUntil: "load"
