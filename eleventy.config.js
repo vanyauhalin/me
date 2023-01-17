@@ -204,7 +204,9 @@ module.exports.hash = () => {
       "/dark.css",
       "/light.css",
       "/main.css",
+      "/SourceCodePro-Medium.woff",
       "/SourceCodePro-Medium.woff2",
+      "/WollstonecraftRomance-Regular.woff",
       "/WollstonecraftRomance-Regular.woff2"
     ]
     const map = await Promise.all(sources.map(async (source) => {
