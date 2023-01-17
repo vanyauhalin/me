@@ -244,7 +244,9 @@ module.exports.pdf = () => {
     .spawn("node", [
       "node_modules/@11ty/eleventy/cmd.js",
       "--serve",
-      "--dryrun"
+      "--dryrun",
+      "--port",
+      "3000"
     ])
     .on("error", (error) => {
       console.error(error)
@@ -261,7 +263,7 @@ module.exports.pdf = () => {
         const slug = target
           .replace(".build", "")
           .replace("/index.html", "")
-        const url2 = new url.URL(slug, "http://localhost:8080")
+        const url2 = new url.URL(slug, "http://localhost:3000")
         const page = await browser.newPage()
         await page.goto(url2.href, {
           waitUntil: "load"
