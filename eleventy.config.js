@@ -242,12 +242,6 @@ module.exports.hash = () => {
   })
 }
 
-function delay() {
-  return new Promise((resolve) => {
-    setTimeout
-  })
-}
-
 module.exports.pdf = () => {
   const serve = childProcess
     .spawn("node", [
