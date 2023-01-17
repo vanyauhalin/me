@@ -1,0 +1,52 @@
+@media not print {
+  .content {
+    display: grid;
+    padding: 2.1rem 16px;
+    row-gap: 1rem;
+  }
+}
+
+@media not print {
+  .content section:not([class]) {
+    display: contents;
+  }
+}
+
+.content :is(h1, h2),
+.content__heading {
+  font-family: Source Code Pro, monospace;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.1;
+  margin: 0;
+}
+
+.content h2 {
+  margin-bottom: 1rem;
+  margin-block-start: 2.1rem;
+}
+
+.content p:not([class]) {
+  margin: 0;
+}
+
+@media not print {
+  .content p:not([class]) {
+    max-width: 640px;
+  }
+}
+
+.content a {
+  color: inherit;
+}
+
+.content__intro {
+  margin-bottom: 2.1rem;
+}
+
+@media not print {
+  .content__postscript {
+    /* 4.2rem = 2.1rem * 2 */
+    margin-block-start: 4.2rem;
+  }
+}

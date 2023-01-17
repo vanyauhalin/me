@@ -1,0 +1,7 @@
+:root {
+  --color-blue: hsl(217, 80%, 33%);
+  --color-green: hsl(144, 52%, 21%);
+  --color-red: hsl(0, 82%, 31%);
+  --color-foreground: hsl(0 0% 92%);
+  --color-background: hsl(0 0% 8%);
+}

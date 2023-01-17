@@ -1,0 +1,10 @@
+@media screen and (width <= 672px) {
+  .content h1,
+  .content__heading_first {
+    font-size: 40px;
+  }
+
+  .content h2 {
+    font-size: 32px;
+  }
+}

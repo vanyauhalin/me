@@ -1,0 +1,20 @@
+/* 672px = 640px + 16px * 2 */
+@media screen and (width > 672px) {
+  .content {
+    margin-left: calc((100% - 672px) / 2);
+  }
+
+  .content :is(h1, h2),
+  .content__heading {
+    text-indent: 1em;
+  }
+
+  .content h1,
+  .content__heading_first {
+    font-size: 64px;
+  }
+
+  .content h2 {
+    font-size: 42px;
+  }
+}

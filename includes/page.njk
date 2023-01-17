@@ -1,0 +1,122 @@
+<!doctype html>
+<html
+  class="page"
+  lang="en"
+>
+  <head>
+    <meta charset="utf-8">
+
+    <link
+      rel="preload"
+      href="/SourceCodePro-Medium.woff2"
+      crossorigin
+      as="font"
+      type="font/woff2"
+    >
+    <link
+      rel="preload"
+      href="/WollstonecraftRomance-Regular.woff2"
+      crossorigin
+      as="font"
+      type="font/woff2"
+    >
+
+    <link
+      rel="stylesheet"
+      href="/main.css"
+    >
+    <link
+      rel="stylesheet"
+      href="/light.css"
+      media="(prefers-color-scheme: light)"
+    >
+    <link
+      rel="stylesheet"
+      href="/dark.css"
+      media="(prefers-color-scheme: dark)"
+    >
+
+    <link
+      rel="author"
+      href="https://t.me/vanyauhalin"
+    >
+    <link
+      rel="me"
+      href="https://t.me/vanyauhalin"
+      type="text/html"
+    >
+    <link
+      rel="me"
+      href="mailto:vanyauhalin@gmail.com"
+    >
+    <link
+      rel="license"
+      href="/LICENSE"
+    >
+    <link
+      rel="canonical"
+      href="https://vanyauhalin.me{{ page.url }}"
+    >
+
+    <title>
+      {{ title }}
+    </title>
+
+    <meta
+      name="author"
+      content="Ivan Uhalin <vanyauhalin@gmail.com>"
+    >
+    <meta
+      name="description"
+      content="{{ description | trim }}"
+    >
+    <meta
+      name="generator"
+      content="{{ eleventy.generator }}"
+    >
+    <meta
+      name="keywords"
+      content="blog, cv, me"
+    >
+
+    <meta
+      name="theme-color"
+      content="#fafafa"
+      media="(prefers-color-scheme: light)"
+    >
+    <meta
+      name="theme-color"
+      content="#141414"
+      media="(prefers-color-scheme: dark)"
+    >
+    <meta
+      name="color-scheme"
+      content="light dark"
+    >
+
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1"
+    >
+
+    <meta
+      property="og:type"
+      content="website"
+    >
+    <meta
+      property="og:title"
+      content="{{ title }}"
+    >
+    <meta
+      property="og:description"
+      content="{{ description | trim }}"
+    >
+    <meta
+      property="og:url"
+      content="https://vanyauhalin.me{{ page.url }}"
+    >
+  </head>
+  <body class="page__body">
+    {{ content | safe }}
+  </body>
+</html>

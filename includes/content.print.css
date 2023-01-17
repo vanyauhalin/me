@@ -1,0 +1,64 @@
+@media print {
+  .content {
+    column-gap: 2.1rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .content_medium {
+    padding: 3.25rem 4rem;
+  }
+
+  .content_small {
+    padding: 2.25rem 4rem;
+  }
+
+  .content section:nth-child(2) {
+    grid-row: 2 / 4;
+  }
+
+  .content section > h2:first-child {
+    margin-top: 0;
+  }
+
+  .content :is(h1, h2),
+  .content__heading {
+    text-indent: 1em;
+  }
+
+  .content h1,
+  .content__heading_first {
+    font-size: 20pt;
+  }
+
+  .content h2 {
+    font-size: 12pt;
+  }
+
+  .content a {
+    white-space: nowrap;
+  }
+
+  .content p:not(:last-of-type) {
+    margin-bottom: 1rem;
+  }
+
+  .content p:not([class]) {
+    text-align: justify;
+  }
+
+  .content__intro {
+    grid-column: 1 / 3;
+    grid-row: 1;
+  }
+
+  .content__postscript {
+    grid-column: 2 / 3;
+    grid-row: 3;
+  }
+
+  .content__postscript {
+    margin-block-start: auto;
+    padding-block-start: 2.1rem;
+  }
+}
