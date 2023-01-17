@@ -1,0 +1,24 @@
+{
+  "private": true,
+  "scripts": {
+    "build-hash": "node -e \"require('./eleventy.config.js').hash()\"",
+    "build-pdf": "node -e \"require('./eleventy.config.js').pdf()\"",
+    "build": "eleventy",
+    "clean": "rm -rf ./.build",
+    "serve": "eleventy --serve"
+  },
+  "devDependencies": {
+    "@11ty/eleventy": "2.0.0-canary.23",
+    "@iarna/toml": "^2.2.5",
+    "html-minifier-terser": "^7.1.0",
+    "postcss": "^8.4.20",
+    "postcss-csso": "^6.0.1",
+    "postcss-import": "^15.1.0",
+    "postcss-media-minmax": "^5.0.0",
+    "puppeteer": "^19.5.2"
+  },
+  "engines": {
+    "node": ">=18",
+    "pnpm": ">=7"
+  }
+}
