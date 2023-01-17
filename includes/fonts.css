@@ -3,6 +3,7 @@
   src:
     local("Source Code Pro Medium")
     local("SourceCodePro-Medium")
+    url("/SourceCodePro-Medium.woff") format("woff")
     url("/SourceCodePro-Medium.woff2") format("woff2");
   font-weight: 500;
   font-style: normal;
@@ -14,6 +15,7 @@
   src:
     local("Wollstonecraft Romance Regular")
     local("WollstonecraftRomance-Regular")
+    url("/WollstonecraftRomance-Regular.woff") format("woff")
     url("/WollstonecraftRomance-Regular.woff2") format("woff2");
   font-weight: normal;
   font-style: normal;
