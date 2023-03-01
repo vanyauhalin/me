@@ -1,0 +1,104 @@
+lang = "ru"
+noindex = true
+title = "Иван Ухалин · Frontend Разработчик"
+description = "Frontend разработчик любящий свою работу"
+layout = "page.njk"
+permalink = "cv/frontend-ru/index.html"
+
+[intro]
+name = "Иван Ухалин"
+position = "Frontend разработчик"
+summary = """
+Мне нравится публиковать свои проекты в открытом доступе, использовать микроархитектуры и поддерживать высокие требования к коду.
+"""
+
+[contacts.telegram]
+username = "vanyauhalin"
+url = "https://t.me/vanyauhalin"
+
+[contacts.email]
+username = "vanyauhalin@gmail.com"
+url = "mailto:vanyauhalin@gmail.com"
+
+[contacts.github]
+username = "vanyauhalin"
+url = "https://github.com/vanyauhalin"
+
+[contacts.linkedin]
+username = "vanyauhalin"
+url = "https://www.linkedin.com/in/vanyauhalin"
+
+[contacts.site]
+username = "vanyauhalin.me"
+url = "https://vanyauhalin.me"
+
+[[work]]
+name = "Почта Тех"
+position = "Frontend разработчик"
+url = "https://pochta.tech"
+start_date = "2022-03-01"
+end_date = "2022-06-01"
+summary = """
+В комании вместе с командой разработали внутреннее приложение для инженеров для просмотра системных сообщений в потоке. Мы работали с TypeScript и React для создания UI, использовали GitLab, Jira, и Scrum для организации процессов. Перове время тратил больше времени на общение с заказчиком и PM, а также на со-наставничество команды.
+"""
+
+	[work.keywords]
+	verb = ["разработали"]
+	soft = ["командой", "общение", "заказчиком", "PM", "со-наставничество"]
+	hard = ["TypeScript", "React", "GitLab", "Jira", "Scrum"]
+
+[[work]]
+name = "СК НЕБО"
+position = "программиста"
+start_date = "2021-02-01"
+end_date = "2021-07-01"
+summary = """
+В результате в одиночку разработал приложение на JavaScript и Vue для автоматизации отчетности компании и интегрировал их в CRM. Между frontend разработкой поддерживал бизнес-процессы компании, связанные с продажами.
+"""
+
+	[work.keywords]
+	verb = ["разработал", "интегрировал", "поддерживал"]
+	soft = ["в одиночку"]
+	hard = ["JavaScript", "Vue"]
+
+[[work]]
+name = "Freelance"
+position = "Frontend разработчик"
+start_date = "2022-01-01"
+end_date = "2022-02-01"
+summary = """
+Провел рефакторинг двух приложений, написанных с помощью TypeScript и React, для автоматизации отчетности компании и объединил их в одно.
+"""
+
+	[work.keywords]
+	verb = ["рефакторинг", "объединил"]
+	soft = []
+	hard = ["TypeScript", "React"]
+
+[[work]]
+name = "Freelance"
+position = "Frontend разработчик"
+start_date = "2020-12-15"
+end_date = "2021-01-31"
+summary = """
+Кроме того, разработал сайт автоаукциона для интеграции в CRM с использованием ванильных инструментов, таких как JavaScript, HTML и CSS.
+"""
+
+	[work.keywords]
+	verb = ["разработал"]
+	soft = []
+	hard = ["JavaScript", "HTML", "CSS"]
+
+[[education]]
+institution = "Российский Новый Университет"
+url = "https://rosnou.ru"
+area = "Прикладная Информатика"
+study_type = "Бакалавр"
+start_date = "2018-09-01"
+end_date = "2022-07-01"
+summary = """
+Во время учебы изучил что такое концептуальный, функциональный и логический системный дизайн. Также научились анализировать проблемные ситуации и разрабатывать бизнес-требования.
+"""
+
+[skills]
+skills = ["TypeScript", "JavaScript", "React", "Vue", "CSS", "BEM", "HTML", "Node.js", "GitHub Actions"]

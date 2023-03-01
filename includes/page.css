@@ -8,6 +8,10 @@
   line-height: var(--line-height);
 }
 
+.page[lang=ru] {
+  font-family: sans-serif;
+}
+
 .page__body {
   margin: 0;
 }
