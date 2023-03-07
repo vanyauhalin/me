@@ -3,7 +3,6 @@
   background-color: var(--color-background);
   color: var(--color-foreground);
   font-family: Wollstonecraft Romance, serif;
-  /* font-family: system-ui, sans-serif; */
   font-weight: normal;
   letter-spacing: 0.045rem;
   line-height: var(--line-height);
