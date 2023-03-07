@@ -120,7 +120,7 @@ module.exports = (config) => {
     )
   )
 
-  config.addPassthroughCopy({ "includes/{dark,light,main}.css": "." }, {
+  config.addPassthroughCopy({ "blocks/{dark,light,main}.css": "." }, {
     /**
      * @param {string} input
      * @param {string} output
@@ -158,8 +158,8 @@ module.exports = (config) => {
 
   return {
     dir: {
-      layouts: "includes",
-      includes: "includes",
+      layouts: "blocks",
+      includes: "blocks",
       input: ".",
       output: ".build"
     }
