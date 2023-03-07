@@ -37,21 +37,6 @@ module.exports = (config) => {
     }
   )
 
-  config.addFilter(
-    "short_date_ru",
-    /**
-     * @param {string} contents
-     */
-    (contents) => {
-      const date = new Date(contents)
-      const formatter = new Intl.DateTimeFormat('ru-ru', {
-        month: 'short',
-        year: 'numeric'
-      })
-      return formatter.format(date)
-    }
-  )
-
   config.addShortcode(
     "keywords",
     /**

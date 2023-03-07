@@ -1,7 +1,7 @@
 <main class="content content_small">
   <section class="content__intro">
     <span>
-      Zaurbek, hi! My name is
+      Hi, my name is
     </span>
     <h1 id="{{ intro.name | lower | replace(" ", "-") }}">
       {{ intro.name }}
@@ -20,9 +20,6 @@
     </h2>
     <p>
       {{ intro.summary }}
-    </p>
-    <p>
-      {{ intro.postsummary }}
     </p>
     <p>
       I'm always in touch via
@@ -85,7 +82,7 @@
       Projects
     </h2>
     <p>
-      I'm currently actively developing a daily routine management application for iOS called
+      My last project was a tiny script runner called
       <a href="{{ project[0].url }}">
         {{ project[0].name -}}
       </a>
@@ -95,14 +92,24 @@
       {% keywords project[0].summary, project[0].keywords %}
     </p>
     <p>
-      Another of my project is a tiny command line tool called
+      Sometimes I want to "play with fonts" and for this, I have a simple personal
       <a href="{{ project[1].url }}">
-        {{ project[1].name -}}
+        {{ "site" -}}
       </a>
-      that helps organize non-public project files.
+      {{- "." }}
     </p>
     <p>
       {% keywords project[1].summary, project[1].keywords %}
+    </p>
+    <p>
+      A long time ago, I wanted to create a collection of optimized logos and named this project
+      <a href="{{ project[2].url }}">
+        {{ project[2].name -}}
+      </a>
+      {{- "." }}
+    </p>
+    <p>
+      {% keywords project[2].summary, project[2].keywords %}
     </p>
 
     <h2 id="education">
@@ -151,7 +158,7 @@
       <span class="print-only">
         on my
         <a
-          href="https://vanyauhalin.me/cv/laoshi"
+          href="https://vanyauhalin.me/cv/frontend"
           target="_blank"
         >
           {{ "site" -}}
@@ -160,7 +167,7 @@
       <span class="no-print">
         in
         <a
-          href="https://vanyauhalin.me/cv/laoshi.pdf"
+          href="https://vanyauhalin.me/cv/frontend.pdf"
           target="_blank"
         >
           {{ "PDF format" -}}
