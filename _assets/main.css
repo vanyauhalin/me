@@ -1,0 +1,372 @@
+*,
+::before,
+::after {
+	box-sizing: border-box;
+}
+
+:root {
+	--font-size: 14px;
+	--line-height: 1.4;
+	--baseline: calc(var(--font-size) * var(--line-height));
+
+	--blue-500: oklch(0.623 0.214 259.815);
+	--blue-700: oklch(0.488 0.243 264.376);
+	--neutral-50: oklch(0.985 0 0);
+	--neutral-200: oklch(92.2% 0 0);
+	--neutral-350: oklch(0.778 0 0);
+	--neutral-500: oklch(0.556 0 0);
+	--neutral-900: oklch(0.205 0 0);
+	--neutral-950: oklch(0.145 0 0);
+
+	@media (prefers-color-scheme: light) {
+		--color-background: var(--neutral-50);
+		--color-foreground-primary: var(--neutral-950);
+		--color-foreground-secondary: var(--neutral-350);
+		--color-link: var(--blue-700);
+	}
+
+	@media (prefers-color-scheme: dark) {
+		--color-background: var(--neutral-900);
+		--color-foreground-primary: var(--neutral-200);
+		--color-foreground-secondary: var(--neutral-500);
+		--color-link: var(--blue-500);
+	}
+}
+
+html {
+	background-color: var(--color-background);
+	color: var(--color-foreground-primary);
+	font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace;
+	font-size: var(--font-size);
+	font-synthesis: none;
+	line-height: var(--line-height);
+	tab-size: 2;
+	text-rendering: optimizelegibility;
+	text-size-adjust: 100%;
+}
+
+body {
+	margin: 0;
+}
+
+body > header {
+	margin-inline: auto;
+	max-width: 68ch;
+	padding: var(--baseline) 2ch;
+
+	@media print {
+		display: none;
+	}
+}
+
+body > main {
+	margin-inline: auto;
+	max-width: 68ch;
+	padding: calc(var(--baseline) * 4) 2ch;
+}
+
+@media (width < 90ch) {
+	body > main {
+		padding-block: calc(var(--baseline) * 2);
+	}
+}
+
+body > footer {
+	margin-inline: auto;
+	max-width: 68ch;
+	padding: var(--baseline) 2ch;
+}
+
+h1 {
+	font-size: inherit;
+	font-weight: inherit;
+}
+
+pre {
+	font-family: inherit;
+}
+
+a {
+	color: var(--color-link);
+	text-decoration-style: dashed;
+	text-decoration-thickness: 1.05px;
+
+	&:focus-visible {
+		border-radius: 1px;
+		outline-offset: 2px;
+		outline: 2px solid var(--color-link);
+	}
+}
+
+code {
+	font-family: inherit;
+}
+
+.skip {
+	clip: rect(1px, 1px, 1px, 1px);
+	height: 1px;
+	margin-inline: auto;
+	max-width: 68ch;
+	position: absolute;
+	width: 1px;
+
+	&:focus-within {
+		clip: unset;
+		height: unset;
+		padding: var(--baseline) 2ch;
+		position: unset;
+		width: unset;
+	}
+
+	@media print {
+		display: none;
+	}
+}
+
+@media (width < 90ch) {
+	.skip {
+		margin-block: var(--baseline);
+	}
+}
+
+.skip > a::before {
+	color: var(--color-foreground-secondary);
+	content: "a ";
+	margin-inline-start: -2ch;
+	position: absolute;
+	user-select: none;
+}
+
+@media (width < 90ch) {
+	.skip > a::before {
+		content: "a";
+		margin-block-start: calc(var(--baseline) * -1);
+		margin-inline-start: unset;
+	}
+}
+
+.content > :first-child {
+	margin-block-start: 0;
+}
+
+.content > :last-child {
+	margin-block-end: 0;
+}
+
+@media (width < 90ch) {
+	.content {
+		margin-block: var(--baseline);
+	}
+}
+
+.content > nav::before {
+	color: var(--color-foreground-secondary);
+	content: "nav ";
+	margin-inline-start: -4ch;
+	position: absolute;
+	user-select: none;
+
+	@media print {
+		display: none;
+	}
+}
+
+@media (width < 90ch) {
+	.content > nav::before {
+		content: "nav";
+		margin-block-start: calc(var(--baseline) * -1);
+		margin-inline-start: unset;
+	}
+}
+
+.content > h1 {
+	margin-block: var(--baseline);
+}
+
+@media (width < 90ch) {
+	.content > h1 {
+		margin-block: calc(var(--baseline) * 2);
+	}
+}
+
+.content > h1::before {
+	color: var(--color-foreground-secondary);
+	content: "h1 ";
+	margin-inline-start: -3ch;
+	position: absolute;
+	user-select: none;
+
+	@media print {
+		display: none;
+	}
+}
+
+@media (width < 90ch) {
+	.content > h1::before {
+		content: "h1";
+		margin-block-start: calc(var(--baseline) * -1);
+		margin-inline-start: unset;
+	}
+}
+
+.content > header {
+	margin-block: var(--baseline);
+}
+
+@media (width < 90ch) {
+	.content > header {
+		margin-block: calc(var(--baseline) * 2);
+	}
+}
+
+.content > header::before {
+	color: var(--color-foreground-secondary);
+	content: "h1 ";
+	margin-inline-start: -3ch;
+	position: absolute;
+	user-select: none;
+
+	@media print {
+		display: none;
+	}
+}
+
+@media (width < 90ch) {
+	.content > header::before {
+		content: "h1";
+		margin-block-start: calc(var(--baseline) * -1);
+		margin-inline-start: unset;
+	}
+}
+
+.content > header > h1 {
+	margin-block: 0;
+}
+
+.content > ul {
+	list-style: none;
+	margin-block: var(--baseline);
+	padding-inline-start: 0;
+}
+
+@media (width < 90ch) {
+	.content > ul {
+		margin-block: calc(var(--baseline) * 2);
+	}
+}
+
+.content > ul::before {
+	color: var(--color-foreground-secondary);
+	content: "ul ";
+	margin-inline-start: -3ch;
+	position: absolute;
+	user-select: none;
+
+	@media print {
+		display: none;
+	}
+}
+
+@media (width < 90ch) {
+	.content > ul::before {
+		content: "ul";
+		margin-block-start: calc(var(--baseline) * -1);
+		margin-inline-start: unset;
+	}
+}
+
+.content > ol {
+	list-style: none;
+	margin-block: var(--baseline);
+	padding-inline-start: 0;
+}
+
+@media (width < 90ch) {
+	.content > ol {
+		margin-block: calc(var(--baseline) * 2);
+	}
+}
+
+.content > ol::before {
+	color: var(--color-foreground-secondary);
+	content: "ol ";
+	margin-inline-start: -3ch;
+	position: absolute;
+	user-select: none;
+
+	@media print {
+		display: none;
+	}
+}
+
+@media (width < 90ch) {
+	.content > ol::before {
+		content: "ol";
+		margin-block-start: calc(var(--baseline) * -1);
+		margin-inline-start: unset;
+	}
+}
+
+.content > li {
+	margin-block: var(--baseline);
+}
+
+.content > p {
+	margin-block: var(--baseline);
+}
+
+@media (width < 90ch) {
+	.content > p {
+		margin-block: calc(var(--baseline) * 2);
+	}
+}
+
+.content > p::before {
+	color: var(--color-foreground-secondary);
+	content: "p ";
+	margin-inline-start: -2ch;
+	position: absolute;
+	user-select: none;
+
+	@media print {
+		display: none;
+	}
+}
+
+@media (width < 90ch) {
+	.content > p::before {
+		content: "p";
+		margin-block-start: calc(var(--baseline) * -1);
+		margin-inline-start: unset;
+	}
+}
+
+.content > pre {
+	margin-block: var(--baseline);
+}
+
+@media (width < 90ch) {
+	.content > pre {
+		margin-block: calc(var(--baseline) * 2);
+	}
+}
+
+.content > pre::before {
+	color: var(--color-foreground-secondary);
+	content: "pre ";
+	margin-inline-start: -4ch;
+	position: absolute;
+	user-select: none;
+
+	@media print {
+		display: none;
+	}
+}
+
+@media (width < 90ch) {
+	.content > pre::before {
+		content: "pre";
+		margin-block-start: calc(var(--baseline) * -1);
+		margin-inline-start: unset;
+	}
+}

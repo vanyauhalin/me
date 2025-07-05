@@ -1,0 +1,48 @@
+name: Publish
+
+permissions:
+  contents: write
+
+on:
+  schedule:
+  - cron: "0 0 * * *"
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout the repository
+      uses: actions/checkout@v4
+
+    - name: Setup GitHub Actions Bot
+      uses: vanyauhalin/action-gh-bot@v0
+
+    - name: Setup mise
+      uses: jdx/mise-action@v2
+
+    - name: Setup pnpm
+      run: |
+        d=$(echo "$HOME/.local/share/pnpm")
+        mkdir -p "${d}"
+        echo "PNPM_HOME=${d}" >> "$GITHUB_ENV"
+        echo "${d}" >> "$GITHUB_PATH"
+
+    - name: Install VSCode Extension Manager
+      run: pnpm install --global @vscode/vsce@3
+
+    - name: Install Open VSX Extension Manager
+      run: pnpm install --global ovsx@0
+
+    - name: Install dependencies
+      run: pnpm install --frozen-lockfile
+
+    - name: Build website
+      env:
+        GH_TOKEN: ${{github.token}}
+      run: pnpm build
+
+    - name: Publish website
+      uses: vanyauhalin/action-gh-pages@v0
+      with:
+        working-directory: _site

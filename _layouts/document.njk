@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>{{title}}</title>
+		<meta name="description" content="{{description}}">
+		<meta name="generator" content="{{eleventy.generator}}">
+		<link rel="canonical" href="{{canonical}}">
+		<meta property="og:type" content="website">
+		<meta property="og:title" content="{{title}}">
+		<meta property="og:description" content="{{description}}">
+		<meta property="og:url" content="{{canonical}}">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<style>{{styles | safe}}</style>
+		<script defer type="module">console.log("Why are you here?")</script>
+		{%- if isBuild %}
+		<script async src="//gc.zgo.at/count.js" data-goatcounter="https://vanyauhalindotme.goatcounter.com/count"></script>
+		{%- endif %}
+	</head>
+	<body>
+		<div class="skip">
+			<a href="#main">Skip to main content</a>
+		</div>
+		<header class="content">
+			<nav>
+				{%- for t in navItems %}
+				<a href="{{t.url}}" {%- if t.current %} aria-current="page" {%- endif %}>{{t.label}}</a>
+				{%- endfor %}
+			</nav>
+		</header>
+		<main id="main" class="content">
+			{{content | safe}}
+		</main>
+		<footer class="content">
+			<p>2025<br>CC BY-NC-SA 4.0</p>
+		</footer>
+	</body>
+</html>
