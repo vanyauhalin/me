@@ -311,6 +311,10 @@ code {
 	margin-block: var(--baseline);
 }
 
+.content > ol > li > span[aria-hidden="true"] {
+	user-select: none;
+}
+
 .content > p {
 	margin-block: var(--baseline);
 }
