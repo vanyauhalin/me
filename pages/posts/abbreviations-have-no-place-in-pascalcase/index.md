@@ -12,6 +12,8 @@ Examples of how abbreviations create incompatibility with other naming conventio
 
 Examples of how abbreviations result in less readable identifiers. [`XMLHttpRequest`] from JavaScript DOM API. [`CGIXMLRPCRequestHandler`] from Python's `xmlrpc.server` module.
 
+Update: The post should have been clearer. I am not arguing against abbreviations — I am arguing for treating them as regular words in PascalCase. For example: `XmlHttpRequest` instead of `XMLHttpRequest`, `CgiXmlRpcRequestHandler` instead of `CGIXMLRPCRequestHandler`.
+
 <!-- Footnotes -->
 
 [`DOMStringMap`]: https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/dataset/#name_conversion
