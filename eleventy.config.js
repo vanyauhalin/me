@@ -63,7 +63,7 @@ function terser(uc) {
 		 */
 		async(c, f) => {
 			try {
-				if (f.endsWith(".html") || f.endsWith(".xml")) {
+				if (f.endsWith(".html")) {
 					return await htmlMinifierTerser.minify(c, {
 						collapseWhitespace: true,
 						decodeEntities: true,
